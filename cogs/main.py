@@ -13,11 +13,9 @@ class Main(commands.Cog):
     async def on_ready(self):
         log.info(f'Cookie Dough is logged in as {self.bot.user}')
 
-    @commands.Cog.listener()
-    async def on_command_completion(self, ctx):
-        """Logs all commands that completed successfully"""
-
-        msg = f'{ctx.author} used {ctx.command}'
+    def get_command_info(self, ctx):
+        """Get command and args information from context"""
+        msg = f'{ctx.command}'
 
         if len(ctx.args) > 0:
             # Find index of the context object
@@ -40,7 +38,21 @@ class Main(commands.Cog):
         if len(ctx.kwargs) > 0:
             msg = msg + f' kwargs={ctx.kwargs}'
 
-        log.info(msg)
+        return msg
+
+    @commands.Cog.listener()
+    async def on_command_completion(self, ctx):
+        """Logs all commands that completed successfully"""
+        command_info = self.get_command_info(ctx)
+        log.info(f'{ctx.author} used [{command_info}]')
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        """Log all command failures except command not found"""
+        if ctx.command is not None:
+            command_info = self.get_command_info(ctx)
+            log.info(f'{ctx.author} attempted to use [{command_info}] but failed with {error} ')
+            raise error
 
     @commands.command()
     async def ping(self, ctx):

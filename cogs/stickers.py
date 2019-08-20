@@ -5,6 +5,8 @@ import discord
 from discord.ext import commands
 
 IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png'}
+IMAGE_AND_JSON_SUFFIXES = set(IMAGE_SUFFIXES)
+IMAGE_AND_JSON_SUFFIXES.add('.json')
 
 
 def snake_to_camel(name):
@@ -57,7 +59,8 @@ class Stickers(commands.Cog):
 
                 self.category_sticker_names[category_name] = sticker_names
 
-                cmd = self._category_command(category_name, category_config['message'], sticker_names, category_config['hidden'])
+                cmd = self._category_command(category_name, category_config['message'], sticker_names,
+                                             category_config['hidden'])
                 self.bot.add_command(cmd)
 
     def _category_command(self, name, message, sticker_names, hidden=True):
@@ -87,25 +90,39 @@ class Stickers(commands.Cog):
         """
         sticker_names = []
 
+        sticker_dict = dict()
+
+        # Collect image and config for each image
         for sticker_path in category_path.iterdir():
-            if sticker_path.is_file() and sticker_path.suffix in IMAGE_SUFFIXES:
-                sticker_config = {
-                    'hidden': True,
-                    'name': f'{prefix}{snake_to_camel(sticker_path.stem)}',
-                    'message': ''
-                }
+            if sticker_path.is_file() and sticker_path.suffix in IMAGE_AND_JSON_SUFFIXES:
+                key = sticker_path.stem
+                if key not in sticker_dict:
+                    # Sticker Config Defaults
+                    sticker_dict[key] = {
+                        'hidden': True,
+                        'name': f'{prefix}{snake_to_camel(sticker_path.stem)}',
+                        'message': '',
+                        'file': None,
+                    }
+                sticker_config = sticker_dict[key]
 
-                try:
-                    with sticker_path.with_suffix('.json').open() as fp:
-                        sticker_config.update(json.load(fp))
-                except IOError as e:
-                    pass  # Ignore if not found
+                if sticker_path.suffix in IMAGE_SUFFIXES:
+                    sticker_config['file'] = sticker_path
+                else:
+                    try:
+                        with sticker_path.with_suffix('.json').open() as fp:
+                            sticker_config.update(json.load(fp))
+                    except IOError as e:
+                        pass  # Ignore if not found
 
-                sticker_names.append(sticker_config['name'])
+        # Create and add a dynamic command for each config object
+        for sticker_config in sticker_dict.values():
+            sticker_names.append(sticker_config['name'])
 
-                # print(f'{sticker_path} {sticker_config}')
-                cmd = self._sticker_command(sticker_config['name'], sticker_path, sticker_config['message'], sticker_config['hidden'])
-                self.bot.add_command(cmd)
+            # print(f'{sticker_path} {sticker_config}')
+            cmd = self._sticker_command(sticker_config['name'], sticker_config['file'], sticker_config['message'],
+                                        sticker_config['hidden'])
+            self.bot.add_command(cmd)
 
         return sticker_names
 
@@ -113,7 +130,8 @@ class Stickers(commands.Cog):
         """Generate a dynamic sticker command object"""
 
         async def callback(cog, ctx):
-            await ctx.send(message, file=discord.File(file))
+            final_file = None if file is None else discord.File(file)
+            await ctx.send(message, file=final_file)
             pass
 
         cmd = commands.Command(
@@ -130,7 +148,8 @@ class Stickers(commands.Cog):
     @commands.command()
     async def stickers(self, ctx):
         """Prints out a list of sticker categories"""
-        await ctx.send(f'Sticker categories (type .<category> to see the stickers inside)\n```{" ".join(self.category_names)}```'.strip())
+        categories = " ".join(self.category_names)
+        await ctx.send(f'Sticker categories (type .<category> to see the stickers inside)\n```{categories}```'.strip())
 
 
 def setup(bot):
