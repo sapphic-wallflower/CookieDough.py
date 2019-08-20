@@ -63,7 +63,7 @@ class Main(commands.Cog):
                 reloaded.append(name)
             except Exception as e:
                 log.exception(f'Failed to reload {name}', exc_info=e)
-                failed.append(name)
+                failed.append(f'name')
 
         msg = ""
 
@@ -73,7 +73,7 @@ class Main(commands.Cog):
         if len(failed) > 0:
             msg = msg + f'Failed: {" ".join(failed)}\n'
 
-        await ctx.send(f"```{msg.strip()}```")
+        await ctx.send(f'```{msg.strip()}```')
 
 
 def setup(bot):
