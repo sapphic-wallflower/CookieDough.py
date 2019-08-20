@@ -7,6 +7,16 @@ from discord.ext import commands
 IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png'}
 
 
+def snake_to_camel(name):
+    """Converts snake_case to CamelCase"""
+    return "".join(word.capitalize() for word in name.split("_"))
+
+
+def snake_to_title(name):
+    """Converts snake_case to Title Case"""
+    return " ".join(word.capitalize() for word in name.split("_"))
+
+
 class Stickers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -25,10 +35,12 @@ class Stickers(commands.Cog):
         for category_path in root.iterdir():
             if category_path.is_dir():
                 category_config = {
-                    'name': f'{category_path.stem}',
+                    'hidden': True,
+                    'name': snake_to_camel(category_path.stem),
                     'prefix': '',
-                    'message': f'{category_path.stem} stickers\n`{{}}`'
+                    'message': f'{snake_to_title(category_path.stem)} stickers\n```{{}}```'
                 }
+
                 try:
                     with category_path.with_suffix('.json').open() as fp:
                         category_config.update(json.load(fp))
@@ -45,10 +57,10 @@ class Stickers(commands.Cog):
 
                 self.category_sticker_names[category_name] = sticker_names
 
-                cmd = self._category_command(category_name, category_config['message'], sticker_names)
+                cmd = self._category_command(category_name, category_config['message'], sticker_names, category_config['hidden'])
                 self.bot.add_command(cmd)
 
-    def _category_command(self, name, message, sticker_names):
+    def _category_command(self, name, message, sticker_names, hidden=True):
         """Generate a dynamic category command object"""
 
         formatted_message = message.format(" ".join(sticker_names)).strip()
@@ -59,7 +71,7 @@ class Stickers(commands.Cog):
 
         cmd = commands.Command(
             callback,
-            hidden=True,  # Don't show sticker commands in the usual help
+            hidden=hidden,  # Don't show category commands in the usual help
             name=name,
             help=f'Info about {name} sticker category'
         )
@@ -78,9 +90,9 @@ class Stickers(commands.Cog):
         for sticker_path in category_path.iterdir():
             if sticker_path.is_file() and sticker_path.suffix in IMAGE_SUFFIXES:
                 sticker_config = {
-                    'name': f'{prefix}{sticker_path.stem}',
-                    'message': '',
-                    'hidden': True
+                    'hidden': True,
+                    'name': f'{prefix}{snake_to_camel(sticker_path.stem)}',
+                    'message': ''
                 }
 
                 try:
@@ -97,7 +109,7 @@ class Stickers(commands.Cog):
 
         return sticker_names
 
-    def _sticker_command(self, name, file, message=None, hidden=True):
+    def _sticker_command(self, name, file, message='', hidden=True):
         """Generate a dynamic sticker command object"""
 
         async def callback(cog, ctx):
@@ -106,9 +118,9 @@ class Stickers(commands.Cog):
 
         cmd = commands.Command(
             callback,
+            hidden=hidden,  # Don't show sticker commands in the usual help
             name=name,
-            help=f'Send {name} sticker',
-            hidden=hidden
+            help=f'Send {name} sticker'
         )
 
         cmd.cog = self
@@ -118,7 +130,7 @@ class Stickers(commands.Cog):
     @commands.command()
     async def stickers(self, ctx):
         """Prints out a list of sticker categories"""
-        await ctx.send(f'Sticker categories (type .<category> to see the stickers inside)\n`{" ".join(self.category_names)}`'.strip())
+        await ctx.send(f'Sticker categories (type .<category> to see the stickers inside)\n```{" ".join(self.category_names)}```'.strip())
 
 
 def setup(bot):
