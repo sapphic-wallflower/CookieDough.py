@@ -101,6 +101,7 @@ class Stickers(commands.Cog):
                     sticker_dict[key] = {
                         'hidden': True,
                         'name': f'{prefix}{snake_to_camel(sticker_path.stem)}',
+                        'aliases': [],
                         'message': '',
                         'file': None,
                     }
@@ -120,14 +121,18 @@ class Stickers(commands.Cog):
             sticker_names.append(sticker_config['name'])
 
             # print(f'{sticker_path} {sticker_config}')
-            cmd = self._sticker_command(sticker_config['name'], sticker_config['file'], sticker_config['message'],
-                                        sticker_config['hidden'])
+            cmd = self._sticker_command(sticker_config)
             self.bot.add_command(cmd)
 
         return sticker_names
 
-    def _sticker_command(self, name, file, message='', hidden=True):
+    def _sticker_command(self, config):
         """Generate a dynamic sticker command object"""
+        name = config['name']
+        file = config['file']
+        aliases = config['aliases']
+        message = config['message']
+        hidden = config['hidden']
 
         async def callback(cog, ctx):
             final_file = None if file is None else discord.File(file)
@@ -138,6 +143,7 @@ class Stickers(commands.Cog):
             callback,
             hidden=hidden,  # Don't show sticker commands in the usual help
             name=name,
+            aliases=aliases,
             help=f'Send {name} sticker'
         )
 

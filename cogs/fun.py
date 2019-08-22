@@ -2,19 +2,6 @@ import random
 
 from discord.ext import commands
 
-CHOICES_8BALL = [
-    'It is certain.', 'It is decidedly so.', 'Without a doubt.',
-    'Yes - definitely', 'You may rely on it.', 'As I see it, yes ',
-    'Most likely ', 'Outlook good.', 'Yes ', 'Signs point to yes.',
-    'Reply hazy, try again later ', 'Better not tell you now ',
-    'I\'m not so sure...Someone else here may be, however.',
-    'Answers lie within those other than me or you.Chat knows best.',
-    'Methinks the next person to say something about it is correct.',
-    'Don\'t count on it.', 'My reply is no.', 'My sources say no.',
-    'Outlook not so good.', 'Very Doubtful.'
-]
-
-
 class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -38,6 +25,18 @@ class Fun(commands.Cog):
         # 8 ball balance is based on how many replies there are. Currently there are
         # 10 yes, 2 try again, 3 chat decides, and 5 no. meaning that yes has 1/2 chance, and no has 1/4 chance.
         # That is, with chat and re-rolls not counting.
+
+        CHOICES_8BALL = [
+            'It is certain.', 'It is decidedly so.', 'Without a doubt.',
+            'Yes - definitely', 'You may rely on it.', 'As I see it, yes ',
+            'Most likely ', 'Outlook good.', 'Yes ', 'Signs point to yes.',
+            'Reply hazy, try again later ', 'Better not tell you now ',
+            'I\'m not so sure...Someone else here may be, however.',
+            'Answers lie within those other than me or you.Chat knows best.',
+            'Methinks the next person to say something about it is correct.',
+            'Don\'t count on it.', 'My reply is no.', 'My sources say no.',
+            'Outlook not so good.', 'Very Doubtful.'
+        ]
 
         result = random.choice(CHOICES_8BALL)
         await ctx.send(f'<@{ctx.author.id}> {result} :8ball:')

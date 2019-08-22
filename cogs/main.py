@@ -75,7 +75,7 @@ class Main(commands.Cog):
                 reloaded.append(name)
             except Exception as e:
                 log.exception(f'Failed to reload {name}', exc_info=e)
-                failed.append(f'name')
+                failed.append(f'{name}')
 
         msg = ""
 
