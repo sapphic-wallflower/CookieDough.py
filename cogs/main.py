@@ -59,7 +59,7 @@ class Main(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         """Replies with pong and the latency"""
-        await ctx.send(f':ping_pong: Pong! `{round(ctx.bot.latency * 1000)} ms`')
+        await ctx.send(f':eyes:`{round(ctx.bot.latency * 1000)} ms`')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
