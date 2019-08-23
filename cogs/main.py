@@ -44,7 +44,7 @@ class Main(commands.Cog):
     async def on_command_completion(self, ctx):
         """Logs all commands that completed successfully"""
         command_info = self.get_command_info(ctx)
-        log.info(f'{ctx.author} used [{command_info}]')
+        log.info(f'{ctx.author} used [{command_info}] in #{ctx.channel}')
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):

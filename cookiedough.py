@@ -10,6 +10,7 @@ description = '''A cookie loving Discord bot'''
 bot = commands.Bot(command_prefix='.', description=description, case_insensitive=True)
 
 bot.load_extension("cogs.main")
+bot.load_extension("cogs.admin")
 bot.load_extension("cogs.stickers")
 bot.load_extension("cogs.fun")
 
