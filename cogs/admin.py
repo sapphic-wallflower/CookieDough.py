@@ -1,9 +1,5 @@
-import logging
-
 from discord.ext import commands
 from discord.ext.commands import BadArgument
-
-log = logging.getLogger("cogs.main")
 
 
 class Admin(commands.Cog):
