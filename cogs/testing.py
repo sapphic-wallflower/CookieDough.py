@@ -1,5 +1,4 @@
 import logging
-
 from discord import MessageType, Embed
 from discord.ext import commands
 from discord import Webhook, AsyncWebhookAdapter
