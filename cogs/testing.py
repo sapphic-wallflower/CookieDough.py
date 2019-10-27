@@ -1,5 +1,4 @@
 import logging
-
 from discord import MessageType, Embed
 from discord.ext import commands
 from discord import Webhook, AsyncWebhookAdapter
@@ -63,12 +62,24 @@ class Testing(commands.Cog):
                                embed=enbd)
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
+=======
+    @commands.command()
+    async def FwiendReadPermission(self, ctx):
+        """Check if the Fwiend Role can read messages in the channel that the command is used in"""
+        for role in ctx.guild.roles:
+            if role.name.lower() == "fwiend":
+                Fwiend = role
+        if ctx.channel.overwrites_for(Fwiend).read_messages is None:
+            await ctx.send('Fwiend Read Permission for this channel is set to: None')
+        else:
+            await ctx.send(f'Fwiend Read Permission for this channel is set to: {ctx.channel.overwrites_for(Fwiend).read_messages}')
 
     @commands.command()
     async def webtest(self, ctx):
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url('https://discordapp.com/api/webhooks/618452978655035403/hcxP1sYd2tLKYl_bmWI5iWgya-OKv8yS6zdGdjlrjo01yrR4Qx8H0qGB7YATx5iYPJNX',
-                                   adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(
+                'https://discordapp.com/api/webhooks/618452978655035403/hcxP1sYd2tLKYl_bmWI5iWgya-OKv8yS6zdGdjlrjo01yrR4Qx8H0qGB7YATx5iYPJNX',
+                adapter=AsyncWebhookAdapter(session))
             # implimentation to automatically pull webhook url is needed
             enbd = Embed(title='Still Alive',
                          description='I\'m making a note here; **_huge success_**',
