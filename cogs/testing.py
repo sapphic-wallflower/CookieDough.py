@@ -1,13 +1,9 @@
 import logging
 
-<<<<<<< HEAD
-from discord.ext import commands
-=======
 from discord import MessageType, Embed
 from discord.ext import commands
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
->>>>>>> Sigh
 
 log = logging.getLogger("cogs.testing")
 
@@ -28,8 +24,6 @@ class Testing(commands.Cog):
             emoji = f'<:{payload.emoji.name}:{payload.emoji.id}>'
         await channel.send(f'{user.mention} Reacted to {message.jump_url} with {emoji}!')
 
-<<<<<<< HEAD
-=======
     @commands.Cog.listener()
     async def on_message(self, message):
         """When a message is pinned, push an embed of that message through a webhook"""
@@ -69,12 +63,23 @@ class Testing(commands.Cog):
                                embed=enbd)
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
+    @commands.command()
+    async def FwiendReadPermission(self, ctx):
+        """Check if the Fwiend Role can read messages in the channel that the command is used in"""
+        for role in ctx.guild.roles:
+            if role.name.lower() == "fwiend":
+                Fwiend = role
+        if ctx.channel.overwrites_for(Fwiend).read_messages is None:
+            await ctx.send('Fwiend Read Permission for this channel is set to: None')
+        else:
+            await ctx.send(f'Fwiend Read Permission for this channel is set to: {ctx.channel.overwrites_for(Fwiend).read_messages}')
 
     @commands.command()
     async def webtest(self, ctx):
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url('https://discordapp.com/api/webhooks/618452978655035403/hcxP1sYd2tLKYl_bmWI5iWgya-OKv8yS6zdGdjlrjo01yrR4Qx8H0qGB7YATx5iYPJNX',
-                                   adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(
+                'https://discordapp.com/api/webhooks/618452978655035403/hcxP1sYd2tLKYl_bmWI5iWgya-OKv8yS6zdGdjlrjo01yrR4Qx8H0qGB7YATx5iYPJNX',
+                adapter=AsyncWebhookAdapter(session))
             # implimentation to automatically pull webhook url is needed
             enbd = Embed(title='Still Alive',
                          description='I\'m making a note here; **_huge success_**',
@@ -95,7 +100,6 @@ class Testing(commands.Cog):
             await webhook.send(avatar_url=f'{ctx.author.avatar_url}',
                                username=f'{ctx.author.nick}',
                                embed=enbd)
->>>>>>> Sigh
 
 def setup(bot):
     bot.add_cog(Testing(bot))
