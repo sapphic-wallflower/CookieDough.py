@@ -4,7 +4,7 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
-IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png'}
+IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4'}
 IMAGE_AND_JSON_SUFFIXES = set(IMAGE_SUFFIXES)
 IMAGE_AND_JSON_SUFFIXES.add('.json')
 
@@ -46,7 +46,7 @@ class Stickers(commands.Cog):
 
                 # Try to find path to thumbnail
                 for ext in IMAGE_SUFFIXES:
-                    thumb_path = root / f'{snake_to_camel(category_path.stem)}{ext}'
+                    thumb_path = root / f'{category_path.stem}{ext}'
                     if thumb_path.exists():
                         category_config['file'] = thumb_path
                         break
