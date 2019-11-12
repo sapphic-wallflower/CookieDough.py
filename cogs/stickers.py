@@ -155,7 +155,7 @@ class Stickers(commands.Cog):
     async def stickers(self, ctx):
         """Prints out a list of sticker categories"""
         categories = " ".join(self.category_names)
-        await ctx.send(f'Sticker categories (type .<category> to see the stickers inside)\n```{categories}```'.strip())
+        await ctx.send(f'Here\'s a list of our sticker packs!\nType `{self.bot.command_prefix}[pack-name]` to see a list of the stickers inside of that pack.```{categories}``` Also, you can add stickers in the `!shop`!'.strip())
 
 
 def setup(bot):
