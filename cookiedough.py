@@ -1,6 +1,5 @@
 import logging
 import sys
-
 from discord.ext import commands
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s][%(name)s][%(levelname)s] %(message)s',
@@ -11,7 +10,7 @@ bot = commands.Bot(command_prefix='.', description=description, case_insensitive
 
 bot.load_extension("cogs.main")
 bot.load_extension("cogs.admin")
-bot.load_extension('cogs.automod')
+bot.load_extension("cogs.pinboard")
 bot.load_extension("cogs.stickers")
 bot.load_extension("cogs.fun")
 # bot.load_extension("cogs.testing")
