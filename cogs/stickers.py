@@ -40,8 +40,16 @@ class Stickers(commands.Cog):
                     'hidden': True,
                     'name': snake_to_camel(category_path.stem),
                     'prefix': '',
-                    'message': f'{snake_to_title(category_path.stem)} stickers\n```{{}}```'
+                    'message': f'{snake_to_title(category_path.stem)} stickers\n```{{}}```',
+                    'file': None
                 }
+
+                # Try to find path to thumbnail
+                for ext in IMAGE_SUFFIXES:
+                    thumb_path = root / f'{snake_to_camel(category_path.stem)}{ext}'
+                    if thumb_path.exists():
+                        category_config['file'] = thumb_path
+                        break
 
                 try:
                     with category_path.with_suffix('.json').open() as fp:
@@ -59,18 +67,24 @@ class Stickers(commands.Cog):
 
                 self.category_sticker_names[category_name] = sticker_names
 
-                cmd = self._category_command(category_name, category_config['message'], sticker_names,
-                                             category_config['hidden'])
+                category_config['sticker_names'] = sticker_names
+
+                cmd = self._category_command(category_config)
                 self.bot.add_command(cmd)
 
-    def _category_command(self, name, message, sticker_names, hidden=True):
+    def _category_command(self, config):
         """Generate a dynamic category command object"""
+        hidden = config['hidden']
+        name = config['name']
+        file = config['file']
+        message = config['message']
+        sticker_names = config['sticker_names']
 
         formatted_message = message.format(" ".join(sticker_names)).strip()
 
         async def callback(cog, ctx):
-            await ctx.send(formatted_message)
-            pass
+            final_file = None if file is None else discord.File(file)
+            await ctx.send(formatted_message, file=final_file)
 
         cmd = commands.Command(
             callback,
@@ -137,7 +151,6 @@ class Stickers(commands.Cog):
         async def callback(cog, ctx):
             final_file = None if file is None else discord.File(file)
             await ctx.send(message, file=final_file)
-            pass
 
         cmd = commands.Command(
             callback,

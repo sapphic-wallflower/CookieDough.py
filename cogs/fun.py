@@ -2,17 +2,18 @@ import random
 
 from discord.ext import commands
 
+
 class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=["flip", "coinflip", "flipcoin"])
     async def coin(self, ctx, *args):
         """Randomly selects Heads/Tails"""
         result = random.choice(['Heads', 'Tails'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!')
 
-    @commands.command()
+    @commands.command(aliases=["dice"])
     async def roll(self, ctx, *args):
         """Randomly selects a number in from 1 to 6"""
         result = random.choice(['1', '2', '3', '4', '5', '6'])
