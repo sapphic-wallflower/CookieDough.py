@@ -1,9 +1,8 @@
 import logging
-
+import discord
 from discord.ext import commands
 
 log = logging.getLogger("cogs.main")
-
 
 class Main(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -12,6 +11,8 @@ class Main(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         log.info(f'Cookie Dough is logged in as {self.bot.user}')
+        await self.bot.change_presence(activity=discord.Game(f"{self.bot.command_prefix}help"))
+        log.info(f'Set {self.bot.user} status to \"Playing {self.bot.command_prefix}help\"')
 
     def get_command_info(self, ctx):
         """Get command and args information from context"""
@@ -59,7 +60,7 @@ class Main(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         """Replies with pong and the latency"""
-        await ctx.send(f':ping_pong: ping!`{round(ctx.bot.latency * 1000)} ms`')
+        await ctx.send(f':ping_pong: Pong!`{round(ctx.bot.latency * 1000)} ms`')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
