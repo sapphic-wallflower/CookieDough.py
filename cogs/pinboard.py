@@ -2,6 +2,7 @@ import logging
 from discord import MessageType, Embed
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
+import asyncio
 from discord.ext import commands
 
 log = logging.getLogger("cogs.pinboard")
@@ -121,6 +122,23 @@ class AutoMod(commands.Cog):
             await webhook.send(avatar_url=f'{pins[0].author.avatar_url}',
                                username=pins[0].author.display_name,
                                embed=enbd)
+
+            keeppin = await message.channel.send('Do you want me to keep the message pinned in here? (yes/no)')
+
+            def check(m):
+                return m.channel == message.channel and m.author == message.author and m.content.lower() in ('yes', 'no')
+            try:
+                keeppin_reply = await self.bot.wait_for('message', timeout=60.0, check=check)
+            except asyncio.TimeoutError:
+                await pins[0].unpin()
+                await keeppin.delete()
+            if keeppin_reply.content.lower() == 'yes':
+                await keeppin.delete()
+                await keeppin_reply.delete()
+            if keeppin_reply.content.lower() == 'no':
+                await pins[0].unpin()
+                await keeppin.delete()
+                await keeppin_reply.delete()
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
 
