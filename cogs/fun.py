@@ -19,9 +19,9 @@ class Fun(commands.Cog):
         result = random.choice(['1', '2', '3', '4', '5', '6'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
 
-    @commands.command(name="8ball")
-    async def eight_ball(self, ctx, *args):
-        """The magic 8ball knows all"""
+    @commands.command(aliases=["8ball", "eight_ball", "fortune_cookie"])
+    async def fortune(self, ctx, *args):
+        """Fortune Cookies, baked in Cookie Dough's Kitchen"""
         # 8 ball balance is based on how many replies there are. Currently there are
         # 10 yes, 2 try again, 3 chat decides, and 5 no. meaning that yes has 1/2 chance, and no has 1/4 chance.
         CHOICES_8BALL = [
@@ -36,7 +36,7 @@ class Fun(commands.Cog):
             'Sounds Silly... nah!', 'Not a chance!'
         ]
         result = random.choice(CHOICES_8BALL)
-        await ctx.send(f'<@{ctx.author.id}> {result} :8ball:')
+        await ctx.send(f'<@{ctx.author.id}> {result} :fortune_cookie:')
 
 def setup(bot):
     bot.add_cog(Fun(bot))
