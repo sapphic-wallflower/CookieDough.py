@@ -4,6 +4,7 @@ from discord.ext import commands
 
 log = logging.getLogger("cogs.main")
 
+
 class Main(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot

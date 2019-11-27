@@ -19,7 +19,7 @@ class Fun(commands.Cog):
         result = random.choice(['1', '2', '3', '4', '5', '6'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
 
-    @commands.command(aliases=["8ball", "eight_ball", "fortune_cookie"])
+    @commands.command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
     async def fortune(self, ctx, *args):
         """Fortune Cookies, baked in Cookie Dough's Kitchen"""
         # 8 ball balance is based on how many replies there are. Currently there are
@@ -31,7 +31,7 @@ class Fun(commands.Cog):
             'I\'m having a bit of trouble thinking right this moment... sorry', 'It\'s probably best not to tell you now :x',
             'I\'m not so sure... One of your friends here may be, though!',
             'Not sure, ask another one of your friends!',
-            'Can\'t tell, but the next person to say something about it will be right!',
+            'Can\'t tell, but the next person other than you to say something about it will be right!',
             'Hmm... Nope!', 'I don\'t think so, no', 'Absolutely not!',
             'Sounds Silly... nah!', 'Not a chance!'
         ]
