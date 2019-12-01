@@ -1,5 +1,4 @@
 import random
-
 from discord.ext import commands
 
 
@@ -13,11 +12,19 @@ class Fun(commands.Cog):
         result = random.choice(['Heads', 'Tails'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!')
 
+
+
+
+
     @commands.command(aliases=["dice"])
     async def roll(self, ctx, *args):
         """Randomly selects a number in from 1 to 6"""
         result = random.choice(['1', '2', '3', '4', '5', '6'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
+
+
+
+
 
     @commands.command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
     async def fortune(self, ctx, *args):
@@ -37,6 +44,7 @@ class Fun(commands.Cog):
         ]
         result = random.choice(CHOICES_8BALL)
         await ctx.send(f'<@{ctx.author.id}> {result} :fortune_cookie:')
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))

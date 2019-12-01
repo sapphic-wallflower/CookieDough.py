@@ -62,5 +62,6 @@ class Testing(commands.Cog):
                                username=f'{ctx.author.nick}',
                                embed=enbd)
 
+
 def setup(bot):
     bot.add_cog(Testing(bot))

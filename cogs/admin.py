@@ -87,7 +87,7 @@ class Admin(commands.Cog):
             await ctx.channel.send('finished deleting roles with 0 users!', delete_after=8)
         if count > 0:
             await ctx.channel.send(f'Finished deleting roles with 0 users!\n\
-Note: {count} role(s) with no members had to be skipped because it has a greater hierarchy position than either your top role, or my top role (whichever\'s lower)', delete_after=8)
+Note: {count} role(s) with no members had to be skipped due to having a greater hierarchy position than either your top role, or my top role (whichever\'s lower)', delete_after=8)
         await timewarning.delete()
         await ctx.message.delete()
 
