@@ -1,9 +1,8 @@
 import logging
-from discord import MessageType, Embed
-from discord import Webhook, AsyncWebhookAdapter
+from discord import MessageType, Embed, Webhook, AsyncWebhookAdapter
+from discord.ext import commands
 import aiohttp
 import asyncio
-from discord.ext import commands
 
 log = logging.getLogger("cogs.pinboard")
 
@@ -21,23 +20,45 @@ class AutoMod(commands.Cog):
                 everyone = role
             if role.name.lower() == "fwiend":
                 fwiend = role
-        if message.channel.overwrites_for(everyone).read_messages is False or message.channel.overwrites_for(fwiend).read_messages is False:
+            if role.name.lower() == "grade schooler":
+                gradeschooler = role
+        ovr_everyone = message.channel.overwrites_for(everyone).read_messages
+        ovr_fwiend = message.channel.overwrites_for(fwiend).read_messages
+        ovr_gradeschooler = message.channel.overwrites_for(gradeschooler).read_messages
+        pinboard_name = None
+        if ovr_everyone is False or ovr_fwiend is False:
+            # Is a private channel
+            if ovr_gradeschooler is True:
+                # send to gs-pinboard
+                pinboard_name = 'gs-pinboard'
+            else:
+                # send an error
+                pass
+        else:
+            # Is a public channel so send to global
+            pinboard_name = 'pinboard'
+        if pinboard_name is None:
             await message.channel.send(
                 '(btw, either @Everyone or Fwiends can\'t see this channel. So I can\'t put that message on the pinboard)',
                 delete_after=8)
             return
-
+        wh_info_found = None
+        for wh_info in await message.guild.webhooks():
+            if wh_info.channel.name == pinboard_name:
+                wh_info_found = wh_info
+                break
+        if wh_info_found is None:
+            await message.channel.send(
+                f'Missing webhook for #{pinboard_name}',
+                delete_after=8)
+            return
         async with aiohttp.ClientSession() as session:
-            pins = await message.channel.pins()
-            for wh_info in await message.guild.webhooks():
-                if wh_info.channel == 'pinboard':
-                    break
-            webhook = Webhook.from_url(wh_info.url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
             if webhook is None:
-                log.error('Unable find a webhook in a #pinboard channel!')
-                await message.send('Unable find a webhook in a #pinboard channel!', delete_after=8)
+                log.error(f'Unable find a webhook in the #{pinboard_name} channel!')
+                await message.send(f'Unable find a webhook in a #{pinboard_name} channel!', delete_after=8)
                 return
-
+            pins = await message.channel.pins()
             if pins[0].author.color.value == 0x000000:
                 embdcolor = 0xb9bbbe
             else:
