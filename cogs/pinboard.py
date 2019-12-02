@@ -15,6 +15,9 @@ class AutoMod(commands.Cog):
         """When a message is pinned, push an embed of that message through a webhook"""
         if message.type != MessageType.pins_add:
             return
+        everyone = None
+        fwiend = None
+        gradeschooler = None
         for role in message.guild.roles:
             if role.name.lower() == "@everyone":
                 everyone = role
@@ -22,9 +25,10 @@ class AutoMod(commands.Cog):
                 fwiend = role
             if role.name.lower() == "grade schooler":
                 gradeschooler = role
-        ovr_everyone = message.channel.overwrites_for(everyone).read_messages
-        ovr_fwiend = message.channel.overwrites_for(fwiend).read_messages
-        ovr_gradeschooler = message.channel.overwrites_for(gradeschooler).read_messages
+
+        ovr_everyone = message.channel.overwrites_for(everyone).read_messages if everyone is not None else None
+        ovr_fwiend = message.channel.overwrites_for(fwiend).read_messages if fwiend is not None else None
+        ovr_gradeschooler = message.channel.overwrites_for(gradeschooler).read_messages if gradeschooler is not None else None
         pinboard_name = None
         if ovr_everyone is False or ovr_fwiend is False:
             # Is a private channel
@@ -150,16 +154,16 @@ class AutoMod(commands.Cog):
                 return m.channel == message.channel and m.author == message.author and m.content.lower() in ('yes', 'no')
             try:
                 keeppin_reply = await self.bot.wait_for('message', timeout=60.0, check=check)
+                if keeppin_reply.content.lower() == 'yes':
+                    await keeppin.delete()
+                    await keeppin_reply.delete()
+                elif keeppin_reply.content.lower() == 'no':
+                    await pins[0].unpin()
+                    await keeppin.delete()
+                    await keeppin_reply.delete()
             except asyncio.TimeoutError:
                 await pins[0].unpin()
                 await keeppin.delete()
-            if keeppin_reply.content.lower() == 'yes':
-                await keeppin.delete()
-                await keeppin_reply.delete()
-            if keeppin_reply.content.lower() == 'no':
-                await pins[0].unpin()
-                await keeppin.delete()
-                await keeppin_reply.delete()
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
 
