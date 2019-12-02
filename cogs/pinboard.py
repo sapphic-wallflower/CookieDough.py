@@ -144,6 +144,8 @@ class AutoMod(commands.Cog):
             if len(pins[0].content) > 0:
                 enbd.add_field(name='** **', value=f'{pins[0].content}')
 
+            enbd.set_footer(text=f'pinned by {message.author}')
+
             await webhook.send(avatar_url=f'{pins[0].author.avatar_url}',
                                username=pins[0].author.display_name,
                                embed=enbd)
