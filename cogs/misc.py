@@ -15,18 +15,18 @@ class misc(commands.Cog):
 
     @commands.command(aliases=["diaplist"])
     async def diaperlist(self, ctx: commands.context.Context):
-        """Amazon Affiliate diaper list"""
+        """Amazon Affiliate Diaper List"""
         await ctx.send('**Every ABDL Diaper on Amazon:** https://amzn.to/2tueosG \nNote that this is an affiliate link, so Gay Baby Jail may get kickback on applicable items.')
 
     @commands.command(aliases=["plasticlist"])
     async def clothlist(self, ctx: commands.context.Context):
-        """Amazon Affiliate cloth and plastic diaper list"""
+        """Amazon Affiliate Cloth and Plastic Diaper List"""
         await ctx.send(
             '**Plastic Pants and Cloth Diapers:** https://amzn.to/2PDQKCE \nNote that this is an affiliate link, so Gay Baby Jail may get kickback on applicable items.')
 
     @commands.command(aliases=["pacilist", "accessorieslist"])
     async def accessorylist(self, ctx: commands.context.Context):
-        """Amazon Affiliate accessory list"""
+        """Amazon Affiliate Accessory List"""
         await ctx.send(
             '**A ton of ABDL accessories:** https://amzn.to/35MqXOA \nNote that this is an affiliate link, so Gay Baby Jail may get kickback on applicable items.')
 
