@@ -1,7 +1,9 @@
 import json
+import logging
+import aiohttp
 from pathlib import Path
-
 import discord
+from discord import Embed, Webhook, AsyncWebhookAdapter
 from discord.ext import commands
 
 IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4'}
@@ -149,19 +151,31 @@ class Stickers(commands.Cog):
         hidden = config['hidden']
 
         async def callback(cog, ctx):
+            log = logging.getLogger("cogs.stickers")
             final_file = None if file is None else discord.File(file)
-            await ctx.send(message, file=final_file)
+            channel_name = ctx.channel.name
+            wh_info_found = None
+            for wh_info in await ctx.guild.webhooks():
+                if wh_info.channel.name == channel_name:
+                    wh_info_found = wh_info
+                    break
+            if wh_info_found is None:
+                await ctx.send(
+                    f'Missing webhook for #{channel_name}',
+                    delete_after=8)
+                return
+            async with aiohttp.ClientSession() as session:
+                webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
+                if webhook is None:
+                    log.error(f'Unable find a webhook in #{channel_name}!')
+                    await ctx.send(f'Unable find a webhook in #{channel_name}!', delete_after=8)
+                    return
+                await ctx.message.delete()
+                await webhook.send(avatar_url=f'{ctx.author.avatar_url}', username=ctx.author.display_name, content=message, file=final_file)
 
-        cmd = commands.Command(
-            callback,
-            hidden=hidden,  # Don't show sticker commands in the usual help
-            name=name,
-            aliases=aliases,
-            help=f'Send {name} sticker'
-        )
 
+        cmd = commands.Command(callback, hidden=hidden, name=name, aliases=aliases, help=f'Send {name} sticker')
         cmd.cog = self
-
         return cmd
 
     @commands.command()
