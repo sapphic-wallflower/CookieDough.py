@@ -55,7 +55,8 @@ class Admin(commands.Cog):
         pins = await ctx.message.channel.pins()
         count = 0
         if n <= 0 or n > 50 or n is None:
-            await ctx.channel.send(f'how many pins did you want me to unpin in this channel? (`{command_prefix}pinpurge [number]`(min 1, max 50))')
+            await ctx.channel.send(
+                f'how many pins did you want me to unpin in this channel? (`{command_prefix}pinpurge [number]`(min 1, max 50))')
             return
         timewarning = await ctx.channel.send(f'unpinning {n} pins in this channel, this may take awhile...')
         for pin in pins:
@@ -87,10 +88,24 @@ class Admin(commands.Cog):
             await ctx.channel.send('finished deleting roles with 0 users!', delete_after=8)
         if count > 0:
             await ctx.channel.send(f'Finished deleting roles with 0 users!\n\
-Note: {count} role(s) with no members had to be skipped due to having a greater hierarchy position than either your top role, or my top role (whichever\'s lower)', delete_after=8)
+Note: {count} role(s) with no members had to be skipped due to having a greater hierarchy position than either your top role, or my top role (whichever\'s lower)',
+                                   delete_after=8)
         await timewarning.delete()
         await ctx.message.delete()
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        """Automatically delete all non media messages from non-admins in media channels."""
+        if message.channel.name.endswith('media'):
+            if message.author.guild_permissions.administrator is True:
+                return
+            else:
+                if len(message.embeds)+len(message.attachments) < 1:
+                    await message.delete()
+                else:
+                    return
+        else:
+            return
 
 def setup(bot):
     bot.add_cog(Admin(bot))
