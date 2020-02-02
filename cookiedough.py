@@ -14,6 +14,6 @@ bot.load_extension("cogs.main")
 bot.load_extension("cogs.misc")
 bot.load_extension("cogs.pinboard")
 bot.load_extension("cogs.stickers")
-# bot.load_extension("cogs.testing")
+bot.load_extension("cogs.testing")
 
 bot.run(sys.argv[1])
