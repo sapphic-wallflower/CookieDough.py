@@ -58,7 +58,7 @@ class misc(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        """When a user reacts to a message, ping the user, link the message, and post the reacted emoji"""
+        """when a user reacts to a message with specific emoji, embed that message in another channel"""
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         reactor = self.bot.get_user(payload.user_id)
@@ -99,7 +99,7 @@ class misc(commands.Cog):
 
                 if message.embeds[0].type == 'video':
                     enbd.set_image(url=f'{message.embeds[0].thumbnail.url}')
-                    enbd.add_field(name='This pin has a video! :movie_camera:',
+                    enbd.add_field(name='This post has a video! :movie_camera:',
                                    value=f'**{message.embeds[0].title}**\n[Jump]({message.jump_url}) to watch!',
                                    inline=False)
 
@@ -112,7 +112,7 @@ class misc(commands.Cog):
                     else:
                         enbd.set_image(url=f'{message.embeds[0].thumbnail.proxy_url}')
                     if message.embeds[0].provider.name == 'Tenor':
-                        enbd.add_field(name='This pin has a video! :movie_camera:',
+                        enbd.add_field(name='This post has a video! :movie_camera:',
                                        value=f'[Jump]({message.jump_url}) to watch!',
                                        inline=False)
 
@@ -124,7 +124,7 @@ class misc(commands.Cog):
                         enbd.set_image(url=message.embeds[0].image.url)
                     elif len(message.embeds[0].thumbnail) > 0:
                         enbd.set_image(url=message.embeds[0].thumbnail.url)
-                        enbd.add_field(name='This pin has a video! :movie_camera:',
+                        enbd.add_field(name='This post has a video! :movie_camera:',
                                        value=f'[Jump]({message.jump_url}) to watch!',
                                        inline=False)
                 else:
@@ -132,7 +132,7 @@ class misc(commands.Cog):
                         enbd.set_image(url=message.embeds[0].image.url)
                     elif len(message.embeds[0].thumbnail) > 0:
                         enbd.set_image(url=message.embeds[0].thumbnail.url)
-                        enbd.add_field(name='This pin may have a video! :movie_camera:',
+                        enbd.add_field(name='This post may have a video! :movie_camera:',
                                        value=f'[Jump]({message.jump_url}) to watch!',
                                        inline=False)
                     enbd.add_field(name='** **',
@@ -146,22 +146,22 @@ class misc(commands.Cog):
                 elif message.attachments[0].filename.endswith(('.mp4', '.webm')):
                     enbd.set_image(
                         url=f'{message.attachments[0].proxy_url}?format=jpeg&width={message.attachments[0].width}&height={message.attachments[0].height}')
-                    enbd.add_field(name='This pin could have a video! :movie_camera:',
+                    enbd.add_field(name='This post could have a video! :movie_camera:',
                                    value=f'[Jump]({message.jump_url}) to watch!',
                                    inline=False)
 
                 elif message.attachments[0].filename.endswith('.mp3'):
-                    enbd.add_field(name='This pin has a sound file! :musical_note:',
+                    enbd.add_field(name='This post has a sound file! :musical_note:',
                                    value=f'**{message.attachments[0].filename}**\n[Jump]({message.jump_url}) to listen!',
                                    inline=False)
 
                 else:
-                    enbd.add_field(name=f'This pin has an unembeddable file! :dividers:',
+                    enbd.add_field(name=f'This post has an unembeddable file! :dividers:',
                                    value=f'**{message.attachments[0].filename}**\n[Jump]({message.jump_url}) to see it!',
                                    inline=False)
 
             if len(message.embeds) + len(message.attachments) > 1:
-                enbd.add_field(name='This Pin Has _**Multiple Files**_ :dividers:',
+                enbd.add_field(name='This post Has _**Multiple Files**_ :dividers:',
                                value=f'[Jump]({message.jump_url}) to see all of them!',
                                inline=False)
 
@@ -181,9 +181,9 @@ class misc(commands.Cog):
                 if reaction.emoji.name == "MoveToGeneral2":
                     movetogeneral2 = reaction
             if payload.emoji.name == 'MoveToGeneral1':
-                await message.remove_reaction(emoji=movetogeneral1, member=reactor)
+                await message.clear_reaction(emoji=movetogeneral1)
             if payload.emoji.name == 'MoveToGeneral2':
-                await message.remove_reaction(emoji=movetogeneral2, member=reactor)
+                await message.clear_reaction(emoji=movetogeneral2)
 
             await channel.send(f'{reactor.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
 
