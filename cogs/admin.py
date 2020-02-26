@@ -97,9 +97,9 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
     async def on_message(self, message):
         """Automatically delete all non media messages from non-admins in media channels."""
         if message.channel.name.endswith('media'):
-            #if message.author.guild_permissions.administrator is True:
-            #    return
-            #else:
+            if message.author.guild_permissions.administrator is True:
+                return
+            else:
                 time.sleep(1.500)
                 if len(message.embeds)+len(message.attachments) < 1:
                     await message.delete()
