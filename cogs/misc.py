@@ -61,7 +61,9 @@ class misc(commands.Cog):
         """when a user reacts to a message with specific emoji, embed that message in another channel"""
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        reactor = self.bot.get_user(payload.user_id)
+        reactor_id = self.bot.get_user(payload.user_id)
+        reactor_member = payload.member
+
         if channel.name.endswith('media') is False:
             return
         if payload.emoji.name == 'MoveToGeneral1':
@@ -87,13 +89,13 @@ class misc(commands.Cog):
                 log.error(f'Unable find a webhook in the #{destination_name} channel!')
                 await message.send(f'Unable find a webhook in a #{destination_name} channel!', delete_after=8)
                 return
-            if reactor.color.value == 0x000000:
+            if reactor_member.color.value == 0x000000:
                 embdcolor = 0xb9bbbe
             else:
-                embdcolor = reactor.color
+                embdcolor = reactor_member.color
 
             enbd = Embed(
-                description=f'[Jump To Original Message!]({message.jump_url})\n(from <#{channel.id}>)\n{reactor.mention} wants to talk about this:',
+                description=f'[Jump To Original Message!]({message.jump_url})\n(from <#{channel.id}>)\n{reactor_id.mention} wants to talk about this:',
                 color=embdcolor)
             if len(message.embeds) > 0:
 
@@ -169,13 +171,15 @@ class misc(commands.Cog):
                 enbd.add_field(name='** **', value=f'{message.content}')
             enbd.set_footer(text=f'Originally Posted by {message.author}', icon_url=f'{message.author.avatar_url}')
 
-            await webhook.send(avatar_url=f'{reactor.avatar_url}',
-                               username=reactor.display_name,
+            await webhook.send(avatar_url=f'{reactor_id.avatar_url}',
+                               username=reactor_id.display_name,
                                embed=enbd)
 
             movetogeneral1 = None
             movetogeneral2 = None
             for reaction in message.reactions:
+                if not reaction.custom_emoji:
+                    continue
                 if reaction.emoji.name == "MoveToGeneral1":
                     movetogeneral1 = reaction
                 if reaction.emoji.name == "MoveToGeneral2":
@@ -185,7 +189,7 @@ class misc(commands.Cog):
             if payload.emoji.name == 'MoveToGeneral2':
                 await message.clear_reaction(emoji=movetogeneral2)
 
-            await channel.send(f'{reactor.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
+            await channel.send(f'{reactor_id.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
 
 def setup(bot):
     bot.add_cog(misc(bot))
