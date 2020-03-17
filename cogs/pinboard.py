@@ -119,7 +119,7 @@ class AutoMod(commands.Cog):
                 if pins[0].attachments[0].filename.endswith(('.png', '.jpg', '.gif', '.jpeg', '.webp')):
                     enbd.set_image(url=f'{pins[0].attachments[0].url}')
 
-                elif pins[0].attachments[0].filename.endswith(('.mp4', '.webm')):
+                elif pins[0].attachments[0].filename.endswith(('.mp4', '.webm', '.mov')):
                     enbd.set_image(
                         url=f'{pins[0].attachments[0].proxy_url}?format=jpeg&width={pins[0].attachments[0].width}&height={pins[0].attachments[0].height}')
                     enbd.add_field(name='This pin could have a video! :movie_camera:',
