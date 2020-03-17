@@ -3,6 +3,7 @@ import discord
 from discord import Embed, Webhook, AsyncWebhookAdapter
 from discord.ext import commands
 import aiohttp
+# from pysaucenao import SauceNao
 
 log = logging.getLogger("cogs.misc")
 
@@ -55,6 +56,15 @@ class misc(commands.Cog):
         """Amazon Affiliate Stuffie list"""
         await ctx.send(
             '**Stuffie list:** https://amzn.to/2Q7oac9 \nNote that this is an affiliate link, so Gay Baby Jail may get kickback on applicable items.')
+
+   # @commands.command()
+    #async def SauceNao(self):
+    #    sauce = SauceNao()
+    #    image_url = None
+
+        # results = await sauce.from_file('/path/to/image.png')
+     #   results = await sauce.from_url(f'{image_url}')
+    #    repr(results)
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -145,7 +155,7 @@ class misc(commands.Cog):
                 if message.attachments[0].filename.endswith(('.png', '.jpg', '.gif', '.jpeg', '.webp')):
                     enbd.set_image(url=f'{message.attachments[0].url}')
 
-                elif message.attachments[0].filename.endswith(('.mp4', '.webm')):
+                elif message.attachments[0].filename.endswith(('.mp4', '.webm', '.mov')):
                     enbd.set_image(
                         url=f'{message.attachments[0].proxy_url}?format=jpeg&width={message.attachments[0].width}&height={message.attachments[0].height}')
                     enbd.add_field(name='This post could have a video! :movie_camera:',
