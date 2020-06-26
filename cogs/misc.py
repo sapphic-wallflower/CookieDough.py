@@ -76,10 +76,10 @@ class misc(commands.Cog):
 
         if channel.name.endswith('media') is False:
             return
-        if payload.emoji.name == 'MoveToGeneral1':
-            destination_name = 'general'
-        elif payload.emoji.name == 'MoveToGeneral2':
-            destination_name = 'general-2'
+        if payload.emoji.name == 'MoveToGeneralBlue':
+            destination_name = 'general-blue'
+        elif payload.emoji.name == 'MoveToGeneralPink':
+            destination_name = 'general-pink'
         else:
             return
 
@@ -185,19 +185,19 @@ class misc(commands.Cog):
                                username=reactor_id.display_name,
                                embed=enbd)
 
-            movetogeneral1 = None
-            movetogeneral2 = None
+            movetogeneralblue = None
+            movetogeneralpink = None
             for reaction in message.reactions:
                 if not reaction.custom_emoji:
                     continue
-                if reaction.emoji.name == "MoveToGeneral1":
-                    movetogeneral1 = reaction
-                if reaction.emoji.name == "MoveToGeneral2":
-                    movetogeneral2 = reaction
-            if payload.emoji.name == 'MoveToGeneral1':
-                await message.clear_reaction(emoji=movetogeneral1)
-            if payload.emoji.name == 'MoveToGeneral2':
-                await message.clear_reaction(emoji=movetogeneral2)
+                if reaction.emoji.name == "MoveToGeneralBlue":
+                    movetogeneralblue = reaction
+                if reaction.emoji.name == "MoveToGeneralPink":
+                    movetogeneralpink = reaction
+            if payload.emoji.name == 'MoveToGeneralBlue':
+                await message.clear_reaction(emoji=movetogeneralblue)
+            if payload.emoji.name == 'MoveToGeneralPink':
+                await message.clear_reaction(emoji=movetogeneralpink)
 
             await channel.send(f'{reactor_id.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
 
