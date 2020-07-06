@@ -17,41 +17,13 @@ class Fun(commands.Cog):
 
 
     @commands.command(aliases=["dice"])
-    async def roll1(self, ctx, *args):
+    async def roll(self, ctx, *args):
         """Randomly selects a number in from 1 to 6"""
         result = random.choice(['1', '2', '3', '4', '5', '6'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
 
-    @commands.command(aliases=["diceroll"])
-    async def roll(self, ctx, sides="6", num="1"):
-        """Rolls dice.
-        .roll - roll a 6 sided die
-        .roll 6 2 - roll 2 6-sided dice
-        .roll d6 2 - roll 2 6-sided dice
-        .roll 2 d6 - roll 2 6-sided dice"""
-        # sanitize inputs so .roll d20 works
-        if sides[0] == 'd' or sides[0] == 'D':
-            sides = sides[1:]
-        elif num[0] == 'd' or num[0] == 'D':
-            num = num[1:]
-            swap = num
-            num = sides
-            sides = swap
-        if not num.isdigit():
-            num = "1"
-        if not sides.isdigit():
-            await ctx.send(f'<@{ctx.author.id}> I\'m not sure i get it <:QuestionBun:588539387688517642>'
-                           f', could you try it like this: `.roll d[number of sides] [number of dice]`')
-        elif int(sides) == 0 or int(num) == 0:
-            await ctx.send(f'<@{ctx.author.id}> Have you ever tried dividing by 0? This is a lot like that. '
-                           f'Try rolling more dice next time, sweetie <:StarGiggle:445043444805795860>')
-        else:
-            sides = int(sides)
-            result = []
-            for x in range(int(num)):
-                result.append(str(random.randrange(sides) + 1))
-            output = ", ".join(result)
-            await ctx.send(f'<@{ctx.author.id}> You got **{output}**!:game_die:')
+
+
 
 
     @commands.command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
