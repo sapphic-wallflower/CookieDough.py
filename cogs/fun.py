@@ -47,6 +47,11 @@ class Fun(commands.Cog):
                            f'Try rolling more dice next time, sweetie <:StarGiggle:445043444805795860>')
         else:
             sides = int(sides)
+            if sides > 1000000:
+                sides = 1000000
+            num = int(num)
+            if num > 50:
+                num = 50
             result = []
             for x in range(int(num)):
                 result.append(str(random.randrange(sides) + 1))
