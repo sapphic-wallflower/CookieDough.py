@@ -47,9 +47,11 @@ class Fun(commands.Cog):
                            f'Try rolling more dice next time, sweetie <:StarGiggle:445043444805795860>')
         else:
             sides = int(sides)
-            if sides > 1000000:
-                sides = 1000000
+            # MAX NUMBER OF SIDES
+            if sides > 1000:
+                sides = 1000
             num = int(num)
+            # MAX NUMBER OF DICE
             if num > 50:
                 num = 50
             result = []
