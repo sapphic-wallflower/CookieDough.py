@@ -16,13 +16,13 @@ class Fun(commands.Cog):
 
 
 
-    @commands.command(aliases=["dice"])
-    async def roll1(self, ctx, *args):
-        """Randomly selects a number in from 1 to 6"""
-        result = random.choice(['1', '2', '3', '4', '5', '6'])
-        await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
+    # @commands.command(aliases=["dice"])
+    # async def roll1(self, ctx, *args):
+    #     """Randomly selects a number in from 1 to 6"""
+    #     result = random.choice(['1', '2', '3', '4', '5', '6'])
+    #     await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
 
-    @commands.command(aliases=["diceroll"])
+    @commands.command(aliases=["dice"])
     async def roll(self, ctx, sides="6", num="1"):
         """Rolls dice.
         .roll - roll a 6 sided die
@@ -40,11 +40,12 @@ class Fun(commands.Cog):
         if not num.isdigit():
             num = "1"
         if not sides.isdigit():
-            await ctx.send(f'<@{ctx.author.id}> I\'m not sure i get it <:QuestionBun:588539387688517642>'
-                           f', could you try it like this: `.roll d[number of sides] [number of dice]`')
+            await ctx.send(f'<@{ctx.author.id}> I\'m not sure i get it... <:MeruSad:633650580660682762> \
+Could you try it like this? <:QuestionBun:588539387688517642> \n\
+`.roll d[number of sides] [number of dice]`')
         elif int(sides) == 0 or int(num) == 0:
             await ctx.send(f'<@{ctx.author.id}> Have you ever tried dividing by 0? This is a lot like that. '
-                           f'Try rolling more dice next time, sweetie <:StarGiggle:445043444805795860>')
+                           f'Try rolling more dice next time, sweetie~ <:StarGiggle:445043444805795860>')
         else:
             sides = int(sides)
             # MAX NUMBER OF SIDES
