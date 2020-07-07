@@ -32,13 +32,14 @@ class Admin(commands.Cog):
             await ctx.channel.send(f"Set status to \"Playing **{command_prefix}help | {message}**\"!")
 
     @commands.command()
-    # @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def say(self, ctx):
         """Have Cookie Dough repeat a phrase in a channel"""
-        if not ctx.message.author.permissions_in(ctx.message.channel).manage_guild:
-            if not ctx.message.author.id == 235482330335019008:
-                await ctx.channel.send(f"That command is for grown-ups, silly!")
-                return
+        # Backdoor for Nat, no longer needed
+        # if not ctx.message.author.permissions_in(ctx.message.channel).manage_guild:
+        #     if not ctx.message.author.id == 235482330335019008:
+        #         await ctx.channel.send(f"That command is for grown-ups, silly!")
+        #         return
         command_prefix = self.bot.command_prefix
         target_channel_id = ctx.message.raw_channel_mentions[0]
         if ctx.message.content.startswith(f'{command_prefix}say <#{target_channel_id}> ') is False:
