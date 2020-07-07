@@ -64,9 +64,14 @@ class Main(commands.Cog):
         await ctx.send(f':ping_pong: Pong!`{round(ctx.bot.latency * 1000)} ms`')
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def reload(self, ctx, *args):
         """Reload extension(s)"""
+        # Hardcode for Nat - no longer necessary
+        # if not ctx.message.author.permissions_in(ctx.message.channel).administrator:
+        #     if not ctx.message.author.id == 235482330335019008:
+        #         await ctx.channel.send(f"That command is for grown-ups, silly!")
+        #         return
         if len(args) == 0:
             args = list(self.bot.extensions.keys())
 
