@@ -65,6 +65,13 @@ class misc(commands.Cog):
         # results = await sauce.from_file('/path/to/image.png')
      #   results = await sauce.from_url(f'{image_url}')
     #    repr(results)
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        await member.send('https://cdn.discordapp.com/attachments/610127221855748096/661396909264601089/Welcome.gif')
+        await member.send(f'Hey there! <:MeruWave:659291486793498634> Welcome to **{member.guild.name}**! Please take \
+a look at our rules and info! Then when you\'re ready, please ping OB/GYN with your age and how you heard about us! \
+<:MeruPaci:430485696193757184> Oh, and please be patient after doing so, a human moderator will let you in as soon as \
+they can!')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
