@@ -16,6 +16,7 @@ $ sudo apt-get install python3.6
 ```
 
 After getting Python installed, simply run these two commands. 
+You must be in the root directory of cookiedough.py. 
 
 ```
 $ pip3 install -r requirements.txt
