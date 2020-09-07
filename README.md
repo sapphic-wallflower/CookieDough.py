@@ -16,5 +16,5 @@ $ python cookiedough.py <BOT_TOKEN>
 If you're running both Python 2 and Python 3 on your system, simply run these two commands. 
 ```
 $ pip3 install -r requirements.txt
-$ python3 cookiedough.py <BOT_TOKEN
+$ python3 cookiedough.py <BOT_TOKEN>
 ```
