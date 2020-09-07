@@ -1,8 +1,8 @@
 # Cookie Dough
 
-A cookie loving Discord bot powered by [discord.py](https://github.com/Rapptz/discord.py)
+A cookie loving Discord bot powered by [discord.py](https://github.com/Rapptz/discord.py).
 
-# Running
+She was designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl)
 
 
 ## Python 3: 
@@ -18,4 +18,3 @@ If you're running both Python 2 and Python 3 on your system, simply run these tw
 $ pip3 install -r requirements.txt
 $ python3 cookiedough.py <BOT_TOKEN
 ```
-
