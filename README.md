@@ -2,19 +2,24 @@
 
 A cookie loving Discord bot powered by [discord.py](https://github.com/Rapptz/discord.py).
 
-She was designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl).
+She was designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl)
 
 
-## Python 3: 
-If you're only running Python 3 on your system, simply run these two commands.
+## Installation: 
+To run Cookie Dough, you'll need to have Python installed. 
+* Python for [Windows](https://www.python.org/downloads/windows/).
+* Python for [macOS](https://docs.python-guide.org/starting/install3/osx/).
+* Python for Linux:
 ```
-$ pip install -r requirements.txt
-$ python cookiedough.py <BOT_TOKEN>
+$ sudo apt-get update
+$ sudo apt-get install python3.6
 ```
 
-## Python 2 & Python 3
-If you're running both Python 2 and Python 3 on your system, simply run these two commands. 
+After getting Python installed, simply run these two commands. 
+
 ```
 $ pip3 install -r requirements.txt
 $ python3 cookiedough.py <BOT_TOKEN>
 ```
+
+
