@@ -2,7 +2,7 @@
 
 A cookie loving Discord bot powered by [discord.py](https://github.com/Rapptz/discord.py).
 
-She was designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl)
+She was designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl).
 
 
 ## Python 3: 
