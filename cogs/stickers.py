@@ -6,7 +6,7 @@ import discord
 from discord import Embed, Webhook, AsyncWebhookAdapter
 from discord.ext import commands
 
-IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4'}
+IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4', '.webm'}
 IMAGE_AND_JSON_SUFFIXES = set(IMAGE_SUFFIXES)
 IMAGE_AND_JSON_SUFFIXES.add('.json')
 

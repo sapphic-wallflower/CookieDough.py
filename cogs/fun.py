@@ -81,6 +81,11 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
         result = random.choice(CHOICES_8BALL)
         await ctx.send(f'<@{ctx.author.id}> {result} :fortune_cookie:')
 
+    @commands.commmand(aliases=["rps"])
+    async def rockpaperscissors(self, ctx, *args):
+        """Play a game of Rock Paper Scissors against an opponent or against Cookie Dough."""
+
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
