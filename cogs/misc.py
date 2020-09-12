@@ -81,7 +81,7 @@ they can!')
         reactor_id = self.bot.get_user(payload.user_id)
         reactor_member = payload.member
 
-        if channel.name.endswith('media') is False:
+        if message.channel.type.name is 'private' or channel.name.endswith('media') is False:
             return
         if payload.emoji.name == 'MoveToGeneralBlue':
             destination_name = 'general-blue'

@@ -51,6 +51,7 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
             # MAX NUMBER OF SIDES
             if sides > 1000:
                 sides = 1000
+                await ctx.send('that\'s a lot... let\'s go with 1000 sides per die')
             num = int(num)
             # MAX NUMBER OF DICE
             if num > 50:
@@ -66,15 +67,18 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
     async def fortune(self, ctx, *args):
         """Fortune Cookies, baked in Cookie Dough's Kitchen"""
         # 8 ball balance is based on how many replies there are. Currently there are
-        # 10 yes, 2 try again, 3 chat decides, and 5 no. meaning that yes has 1/2 chance, and no has 1/4 chance.
+        # 10 yes, 2 y'know/you decide, 3 chat decides, and 5 no. meaning that yes has 1/2 chance, and no has 1/4 chance.
+        # We should rework this to allow for more dynamic responses. Such as one where cookie instills democracy
+        #      and reacts with options for chat to vote on
         CHOICES_8BALL = [
             'Yepperoony!', 'Absoltutely!', 'For sure!!',
             'Yes - definitely!', 'Without a doubt!', 'uh-huh!',
             'Duh, of course!', 'I think so, yeah!', 'Yes!', 'That\'s silly, so yes!',
-            'I\'m having a bit of trouble thinking right this moment... sorry', 'It\'s probably best not to tell you now :x',
+            '<:StarGiggle:445043444805795860> I think you already know the answer!',
+            '<:QtWink:639512243796705290> You\'ve been good, so you can decide this time, little one',
             'I\'m not so sure... One of your friends here may be, though!',
             'Not sure, ask another one of your friends!',
-            'Can\'t tell, but the next person other than you to say something about it will be right!',
+            f'first person to answer but you will decide!',
             'Hmm... Nope!', 'I don\'t think so, no', 'Absolutely not!',
             'Sounds Silly... nah!', 'Not a chance!'
         ]
