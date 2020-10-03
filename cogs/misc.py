@@ -84,9 +84,9 @@ they can!')
         if message.channel.type.name is 'private' or channel.name.endswith('media') is False:
             return
         if payload.emoji.name == 'MoveToGeneralBlue':
-            destination_name = 'general-blue'
+            destination_name = 'general-blue💙'
         elif payload.emoji.name == 'MoveToGeneralPink':
-            destination_name = 'general-pink'
+            destination_name = 'general-pink💗'
         else:
             return
 

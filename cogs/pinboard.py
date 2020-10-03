@@ -40,7 +40,7 @@ class AutoMod(commands.Cog):
                 pass
         else:
             # Is a public channel so send to global
-            pinboard_name = 'pinboard'
+            pinboard_name = 'pinboard📌'
         if pinboard_name is None:
             await message.channel.send(
                 '(btw, either @Everyone or Fwiends can\'t see this channel. So I can\'t put that message on the pinboard)',
