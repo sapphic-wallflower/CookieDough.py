@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import BadArgument
 import time
 
+
 class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -99,22 +100,24 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
         await ctx.message.delete()
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, ctx):
         """Automatically delete all non media messages from non-admins in media channels."""
-        if message.channel.type.name is 'private' or message.author.guild_permissions.administrator is True:
+        if ctx.channel.type.name is 'private' or ctx.author.guild_permissions.administrator is True:
             return
-        elif message.channel.name.find('media'):
+        elif ctx.channel.name.find(
+                'media') is not -1:  # looks for the position of substring. if it's not found, this returns -1.
             time.sleep(2.500)
-            if len(message.embeds) + len(message.attachments) < 1:
-                await message.delete()
-                await ctx.send('Unfortunately, you can\'t talk in media channels. You have to send either \
+            if len(ctx.embeds) + len(ctx.attachments) < 1:
+                await ctx.delete()
+                await ctx.channel.send('Unfortunately, you can\'t talk in media channels. You have to send either \
 an attachment or embed with your message. If you sent a link, discord timed out and didn\'t embed the message. \
 (discord can struggle to do this when the file size is large, especially when their servers are being slow). \
 You can try again, or you can download whatever is at the link and upload it to discord manually. Don\'t be afraid to \
 try multiple times. This is all a discord limitation we can\'t do anything about at the moment. Sorry :(',
-                               delete_after=12)
+                                       delete_after=12)
         else:
             return
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))

@@ -81,7 +81,7 @@ they can!')
         reactor_id = self.bot.get_user(payload.user_id)
         reactor_member = payload.member
 
-        if message.channel.type.name is 'private' or channel.name.endswith('media') is False:
+        if message.channel.type.name is 'private' or channel.name.find('media') is -1:  # looks for the position of substring. if it's not found, this returns -1.
             return
         if payload.emoji.name == 'MoveToGeneralBlue':
             destination_name = 'general-blue💙'
