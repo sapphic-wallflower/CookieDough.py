@@ -83,10 +83,10 @@ they can!')
 
         if message.channel.type.name is 'private' or channel.name.find('media') is -1:  # looks for the position of substring. if it's not found, this returns -1.
             return
-        if payload.emoji.name == 'MoveToGeneralBlue':
-            destination_name = 'general-blue💙'
-        elif payload.emoji.name == 'MoveToGeneralPink':
-            destination_name = 'general-pink💗'
+        if payload.emoji.name == 'MoveToGeneral':
+            destination_name = 'general💖'
+        elif payload.emoji.name == 'MoveToDiaperChat':
+            destination_name = 'diaper-chat🍼'
         else:
             return
 
@@ -192,19 +192,19 @@ they can!')
                                username=reactor_id.display_name,
                                embed=enbd)
 
-            movetogeneralblue = None
-            movetogeneralpink = None
+            movetogeneral = None
+            movetodiapertalk = None
             for reaction in message.reactions:
                 if not reaction.custom_emoji:
                     continue
-                if reaction.emoji.name == "MoveToGeneralBlue":
-                    movetogeneralblue = reaction
-                if reaction.emoji.name == "MoveToGeneralPink":
-                    movetogeneralpink = reaction
-            if payload.emoji.name == 'MoveToGeneralBlue':
-                await message.clear_reaction(emoji=movetogeneralblue)
-            if payload.emoji.name == 'MoveToGeneralPink':
-                await message.clear_reaction(emoji=movetogeneralpink)
+                if reaction.emoji.name == "MoveToGeneral":
+                    movetogeneral = reaction
+                if reaction.emoji.name == "MoveToDiaperTalk":
+                    movetodiapertalk = reaction
+            if payload.emoji.name == 'MoveToGeneral':
+                await message.clear_reaction(emoji=movetogeneral)
+            if payload.emoji.name == 'MoveToDiaperTalk':
+                await message.clear_reaction(emoji=movetodiapertalk)
 
             await channel.send(f'{reactor_id.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
 
