@@ -86,7 +86,7 @@ they can!')
         if payload.emoji.name == 'MoveToGeneral':
             destination_name = 'general💖'
         elif payload.emoji.name == 'MoveToDiaperChat':
-            destination_name = 'diaper-chat🍼'
+            destination_name = 'diaper-chat🧸'
         else:
             return
 
@@ -193,18 +193,18 @@ they can!')
                                embed=enbd)
 
             movetogeneral = None
-            movetodiapertalk = None
+            movetodiaperchat = None
             for reaction in message.reactions:
                 if not reaction.custom_emoji:
                     continue
                 if reaction.emoji.name == "MoveToGeneral":
                     movetogeneral = reaction
-                if reaction.emoji.name == "MoveToDiaperTalk":
-                    movetodiapertalk = reaction
+                if reaction.emoji.name == "MoveToDiaperChat":
+                    movetodiaperchat = reaction
             if payload.emoji.name == 'MoveToGeneral':
                 await message.clear_reaction(emoji=movetogeneral)
-            if payload.emoji.name == 'MoveToDiaperTalk':
-                await message.clear_reaction(emoji=movetodiapertalk)
+            if payload.emoji.name == 'MoveToDiaperChat':
+                await message.clear_reaction(emoji=movetodiaperchat)
 
             await channel.send(f'{reactor_id.mention} Moved It to <#{wh_info_found.channel_id}>!', delete_after=3)
 
