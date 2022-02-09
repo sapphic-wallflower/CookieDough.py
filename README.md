@@ -45,3 +45,4 @@ Powered by [discord.py](https://github.com/Rapptz/discord.py).
 
 Some assets provided by the following parties:
 * [Twemoji](https://twemoji.twitter.com/)
+* [Quicksand](https://github.com/andrew-paglinawan/QuicksandFamily)
