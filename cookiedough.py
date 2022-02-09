@@ -3,6 +3,11 @@ import sys
 from discord.ext import commands
 from os import walk
 
+ 
+if __name__ != "__main__":
+  print("This file is not a module and should not be imported")
+  sys.exit()
+
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s][%(name)s][%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d_%H:%M:%S')
 
@@ -22,4 +27,5 @@ for _,v in enumerate(filenames):  #Enumerate directory for iter
     print("Error in cog "+str(v)+". Could not load extension.")
     pass
 
+ 
 bot.run(sys.argv[1])
