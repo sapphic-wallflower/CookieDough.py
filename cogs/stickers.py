@@ -156,7 +156,7 @@ class Stickers(commands.Cog):
             channel_name = ctx.channel.name
             wh_info_found = None
             for wh_info in await ctx.guild.webhooks():
-                if wh_info.channel.name == channel_name:
+                if wh_info.channel.name == channel_name and wh_info.token is not None:
                     wh_info_found = wh_info
                     break
             if wh_info_found is None:

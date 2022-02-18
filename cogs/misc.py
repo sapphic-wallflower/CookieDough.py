@@ -92,7 +92,7 @@ they can!')
 
         wh_info_found = None
         for wh_info in await message.guild.webhooks():
-            if wh_info.channel.name == destination_name:
+            if wh_info.channel.name == destination_name and wh_info.token is not None:
                 wh_info_found = wh_info
                 break
         if wh_info_found is None:
