@@ -36,11 +36,6 @@ class Admin(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def say(self, ctx):
         """Have Cookie Dough repeat a phrase in a channel"""
-        # Backdoor for Nat, no longer needed
-        # if not ctx.message.author.permissions_in(ctx.message.channel).manage_guild:
-        #     if not ctx.message.author.id == 235482330335019008:
-        #         await ctx.channel.send(f"That command is for grown-ups, silly!")
-        #         return
         command_prefix = self.bot.command_prefix
         target_channel_id = ctx.message.raw_channel_mentions[0]
         if ctx.message.content.startswith(f'{command_prefix}say <#{target_channel_id}> ') is False:
@@ -51,6 +46,23 @@ class Admin(commands.Cog):
         for channel in ctx.message.guild.channels:
             if channel.id == target_channel_id:
                 await channel.send(f"{msg}")
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def edit(self, ctx, *args):
+        """Have Cookie Dough replace the contents of a message she sent using .say"""
+        command_prefix = self.bot.command_prefix
+        target_message = await ctx.fetch_message(args[0])
+        if ctx.message.content.startswith(f'{command_prefix}edit {target_message.id}') is False:
+            await ctx.channel.send(
+                f"use `{command_prefix}say [target_message_raw_id] [new contents]` to have me edit the contents of the targeted message with new contents!")
+            return
+        if target_message.author.id != self.bot.user.id:
+            await ctx.channel.send(
+                f"I can only edit my own messages! I wouldn't want to put words in someone else's mouth... What if they sue!? <:MeruImpureThoughts:633650580824391693>")
+            return
+        content = ctx.message.content.replace(f'{command_prefix}edit {target_message.id} ', '')
+        await target_message.edit(content=f"{content}")
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
