@@ -36,6 +36,8 @@ class Admin(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def say(self, ctx):
         """Have Cookie Dough repeat a phrase in a channel"""
+        # perhaps we ought to add functionality where the channel can be unspecified and cookie defaults to the ctx.channel?
+        # needs check or exception for editing a message in another channel
         command_prefix = self.bot.command_prefix
         target_channel_id = ctx.message.raw_channel_mentions[0]
         if ctx.message.content.startswith(f'{command_prefix}say <#{target_channel_id}> ') is False:
@@ -51,6 +53,7 @@ class Admin(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def edit(self, ctx, *args):
         """Have Cookie Dough replace the contents of a message she sent using .say"""
+        #perhaps we ought to add the ability to "s/e/x" hack edit messages ".edit [id] tyop/typo" for instance?
         command_prefix = self.bot.command_prefix
         target_message = await ctx.fetch_message(args[0])
         if ctx.message.content.startswith(f'{command_prefix}edit {target_message.id}') is False:
