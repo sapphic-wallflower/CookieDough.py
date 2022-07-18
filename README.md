@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Cookie Dough" src="https://iidx.s-ul.eu/FvwHVzwk.png">
+  <img alt="Cookie Dough" src="https://files.catbox.moe/j8j93d.png">
 </p>
 <p align="center">
     <a href="https://github.com/sighofrelief/CookieDough.py/graphs/contributors">
