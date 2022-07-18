@@ -11,9 +11,9 @@ bot = commands.Bot(command_prefix='.', description=description, case_insensitive
 bot.load_extension("cogs.admin")
 bot.load_extension("cogs.fun")
 bot.load_extension("cogs.main")
-bot.load_extension("cogs.misc")
 bot.load_extension("cogs.pinboard")
-bot.load_extension("cogs.stickers")
+bot.load_extension("cogs.stamps")
+# bot.load_extension("cogs.misc")
 # bot.load_extension("cogs.testing")
 
 bot.run(sys.argv[1])
