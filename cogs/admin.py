@@ -1,7 +1,8 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import BadArgument
-import time
 
 
 class Admin(commands.Cog):
@@ -117,11 +118,13 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
     @commands.Cog.listener()
     async def on_message(self, ctx):
         """Automatically delete all non media messages from non-admins in media channels."""
+        if ctx.author.id == self.bot.user.id:
+            return
         if ctx.channel.type.name == 'private' or ctx.author.guild_permissions.administrator:
             return
         elif ctx.channel.name.find(
                 'media') != -1:  # looks for the position of substring. if it's not found, this returns -1.
-            time.sleep(2.500)
+            await asyncio.sleep(2.500)
             if len(ctx.embeds) + len(ctx.attachments) < 1:
                 await ctx.delete()
                 await ctx.channel.send('Unfortunately, you can\'t talk in media channels. You have to send either \
