@@ -100,12 +100,12 @@ class Admin(commands.Cog):
         timewarning = await ctx.channel.send('Deleting roles with 0 users, this may take awhile...')
         count = 0
         for role in rolelist:
-            if len(role.members) is 0:
+            if len(role.members) == 0:
                 if role.position >= ctx.me.top_role.position or role.position >= ctx.author.top_role.position:
                     count = count + 1  # Tells the user that roles were skipped after rolelist is looped through, instead of sending the original message
                     continue
                 await role.delete(reason=f'{ctx.message.author} used rolepurge')
-        if count is 0:
+        if count == 0:
             await ctx.channel.send('finished deleting roles with 0 users!', delete_after=8)
         if count > 0:
             await ctx.channel.send(f'Finished deleting roles with 0 users!\n\
@@ -117,10 +117,10 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
     @commands.Cog.listener()
     async def on_message(self, ctx):
         """Automatically delete all non media messages from non-admins in media channels."""
-        if ctx.channel.type.name is 'private' or ctx.author.guild_permissions.administrator is True:
+        if ctx.channel.type.name == 'private' or ctx.author.guild_permissions.administrator:
             return
         elif ctx.channel.name.find(
-                'media') is not -1:  # looks for the position of substring. if it's not found, this returns -1.
+                'media') != -1:  # looks for the position of substring. if it's not found, this returns -1.
             time.sleep(2.500)
             if len(ctx.embeds) + len(ctx.attachments) < 1:
                 await ctx.delete()
@@ -134,5 +134,5 @@ try multiple times. This is all a discord limitation we can\'t do anything about
             return
 
 
-def setup(bot):
-    bot.add_cog(Admin(bot))
+async def setup(bot):
+    await bot.add_cog(Admin(bot))

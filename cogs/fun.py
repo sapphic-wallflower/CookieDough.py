@@ -86,6 +86,5 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
         await ctx.send(f'<@{ctx.author.id}> {result} :fortune_cookie:')
 
 
-
-def setup(bot):
-    bot.add_cog(Fun(bot))
+async def setup(bot):
+    await bot.add_cog(Fun(bot))

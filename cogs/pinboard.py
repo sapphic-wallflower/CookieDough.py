@@ -1,5 +1,5 @@
 import logging
-from discord import MessageType, Embed, Webhook, AsyncWebhookAdapter
+from discord import MessageType, Embed, Webhook
 from discord.ext import commands
 import aiohttp
 import asyncio
@@ -57,7 +57,7 @@ class AutoMod(commands.Cog):
                 delete_after=8)
             return
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(wh_info_found.url, session=session)
             if webhook is None:
                 log.error(f'Unable find a webhook in the #{pinboard_name} channel!')
                 await message.send(f'Unable find a webhook in a #{pinboard_name} channel!', delete_after=8)
@@ -169,5 +169,5 @@ class AutoMod(commands.Cog):
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
 
-def setup(bot):
-    bot.add_cog(AutoMod(bot))
+async def setup(bot):
+    await bot.add_cog(AutoMod(bot))

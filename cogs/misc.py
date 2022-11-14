@@ -34,5 +34,5 @@ or aesthetic reaction in greater or equal proportion to memetic value, bonus poi
 it when you see it". Pictured are a few examples of what to and not to post in media channels. \n https://files.catbox.moe/e3vxwj.png')
 
 
-def setup(bot):
-    bot.add_cog(Misc(bot))
+async def setup(bot):
+    await bot.add_cog(Misc(bot))

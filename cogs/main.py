@@ -67,11 +67,7 @@ class Main(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def reload(self, ctx, *args):
         """Reload extension(s)"""
-        # Hardcode for Nat - no longer necessary
-        # if not ctx.message.author.permissions_in(ctx.message.channel).administrator:
-        #     if not ctx.message.author.id == 235482330335019008:
-        #         await ctx.channel.send(f"That command is for grown-ups, silly!")
-        #         return
+
         if len(args) == 0:
             args = list(self.bot.extensions.keys())
 
@@ -80,7 +76,7 @@ class Main(commands.Cog):
 
         for name in set(args):
             try:
-                ctx.bot.reload_extension(name)
+                await self.bot.reload_extension(name)
                 reloaded.append(name)
             except Exception as e:
                 log.exception(f'Failed to reload {name}', exc_info=e)
@@ -97,5 +93,5 @@ class Main(commands.Cog):
         await ctx.send(f'```{msg.strip()}```')
 
 
-def setup(bot):
-    bot.add_cog(Main(bot))
+async def setup(bot):
+    await bot.add_cog(Main(bot))

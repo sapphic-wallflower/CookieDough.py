@@ -3,7 +3,7 @@ import logging
 import aiohttp
 from pathlib import Path
 import discord
-from discord import Embed, Webhook, AsyncWebhookAdapter
+from discord import Embed, Webhook
 from discord.ext import commands
 
 IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4', '.webm'}
@@ -165,7 +165,7 @@ class Stamps(commands.Cog):
                     delete_after=8)
                 return
             async with aiohttp.ClientSession() as session:
-                webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
+                webhook = Webhook.from_url(wh_info_found.url, session=session)
                 if webhook is None:
                     log.error(f'Unable find a webhook in #{channel_name}!')
                     await ctx.send(f'Unable find a webhook in #{channel_name}!', delete_after=8)
@@ -185,5 +185,5 @@ class Stamps(commands.Cog):
         await ctx.send(f'Here\'s a list of our stamp packs!\nType `{self.bot.command_prefix}[pack-name]` to see a list of the stamps inside of that pack.```{categories}``` Also, you can add stamps in the `!shop`!'.strip())
 
 
-def setup(bot):
-    bot.add_cog(Stamps(bot))
+async def setup(bot):
+    await bot.add_cog(Stamps(bot))
