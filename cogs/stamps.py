@@ -159,7 +159,7 @@ class Stamps(commands.Cog):
         async def cmd(cog: commands.Cog, ctx: commands.Context, *args, **kwargs):
             log = logging.getLogger("cogs.stamps")
             final_file = None if file is None else discord.File(file)
-            is_thread = ctx.channel.type.name.find("thread") != -1
+            is_thread = isinstance(ctx.channel, discord.Thread)
             channel = ctx.channel.parent if is_thread else ctx.channel
             thread = ctx.channel if is_thread else None
             channel_name = channel.name
