@@ -53,10 +53,9 @@ class Main(commands.Cog):
         """Log all command failures except command not found"""
         if ctx.command is not None:
             command_info = self.get_command_info(ctx)
-            log.info(f'{ctx.author} attempted to use [{command_info}] but failed with {error} ')
+            log.exception(f'{ctx.author} attempted to use [{command_info}] but failed with {error} ', exc_info=error)
             reply = await ctx.send(f'{type(error).__name__}: {error}')
             await reply.delete(delay=1)
-            raise error
 
     @commands.command()
     async def ping(self, ctx):
