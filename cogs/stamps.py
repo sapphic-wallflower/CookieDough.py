@@ -165,8 +165,9 @@ class Stamps(commands.Cog):
             channel_name = channel.name
             wh_info_found = None
             for wh_info in await channel.webhooks():
-                wh_info_found = wh_info
-                break
+                if wh_info.token is not None:
+                    wh_info_found = wh_info
+                    break
             if wh_info_found is None:
                 # Try to make a new webhook for this channel.
                 wh_info_found = await channel.create_webhook(name="cookiedough")

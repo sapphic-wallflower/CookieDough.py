@@ -58,8 +58,9 @@ class Pinboard(commands.Cog):
             return
         wh_info_found = None
         for wh_info in await pinboard_channel.webhooks():
-            wh_info_found = wh_info
-            break
+            if wh_info.token is not None:
+                wh_info_found = wh_info
+                break
         if wh_info_found is None:
             # Try to make a new webhook for the pinboard channel.
             wh_info_found = await pinboard_channel.create_webhook(name="cookiedough")
