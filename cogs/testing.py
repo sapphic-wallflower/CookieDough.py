@@ -9,5 +9,5 @@ class Testing(commands.Cog):
         self.bot = bot
 
 
-def setup(bot):
-    bot.add_cog(Testing(bot))
+async def setup(bot):
+    await bot.add_cog(Testing(bot))

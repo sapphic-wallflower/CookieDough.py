@@ -1,17 +1,20 @@
 import logging
-from discord import MessageType, Embed, Webhook, AsyncWebhookAdapter
+
+import discord
+from discord import MessageType, Embed, Webhook
 from discord.ext import commands
 import aiohttp
 import asyncio
 
 log = logging.getLogger("cogs.pinboard")
 
-class AutoMod(commands.Cog):
+
+class Pinboard(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         """When a message is pinned, push an embed of that message through a webhook"""
         if message.type != MessageType.pins_add:
             return
@@ -26,9 +29,10 @@ class AutoMod(commands.Cog):
             if role.name.lower() == "grade schooler":
                 gradeschooler = role
 
-        ovr_everyone = message.channel.overwrites_for(everyone).read_messages if everyone is not None else None
-        ovr_fwiend = message.channel.overwrites_for(fwiend).read_messages if fwiend is not None else None
-        ovr_gradeschooler = message.channel.overwrites_for(gradeschooler).read_messages if gradeschooler is not None else None
+        perms_channel = message.channel.parent if isinstance(message.channel, discord.Thread) else message.channel
+        ovr_everyone = perms_channel.overwrites_for(everyone).read_messages if everyone is not None else None
+        ovr_fwiend = perms_channel.overwrites_for(fwiend).read_messages if fwiend is not None else None
+        ovr_gradeschooler = perms_channel.overwrites_for(gradeschooler).read_messages if gradeschooler is not None else None
         pinboard_name = None
         if ovr_everyone is False or ovr_fwiend is False:
             # Is a private channel
@@ -46,23 +50,37 @@ class AutoMod(commands.Cog):
                 '(btw, either @Everyone or Fwiends can\'t see this channel. So I can\'t put that message on the pinboard)',
                 delete_after=8)
             return
+        pinboard_channel = next((c for c in message.guild.channels if c.name == pinboard_name), None)
+        if not pinboard_channel:
+            await message.channel.send(
+                f'Could not find pinboard channel #{pinboard_name}',
+                delete_after=8)
+            return
         wh_info_found = None
-        for wh_info in await message.guild.webhooks():
-            if wh_info.channel.name == pinboard_name and wh_info.token is not None:
+        for wh_info in await pinboard_channel.webhooks():
+            if wh_info.token is not None:
                 wh_info_found = wh_info
                 break
         if wh_info_found is None:
-            await message.channel.send(
-                f'Missing webhook for #{pinboard_name}',
-                delete_after=8)
-            return
+            # Try to make a new webhook for the pinboard channel.
+            wh_info_found = await pinboard_channel.create_webhook(name="cookiedough")
+            if wh_info_found is None:
+                await message.channel.send(
+                    f'Failed to create webhook for pinboard channel #{pinboard_name}',
+                    delete_after=8)
+                return
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(wh_info_found.url, session=session)
             if webhook is None:
                 log.error(f'Unable find a webhook in the #{pinboard_name} channel!')
-                await message.send(f'Unable find a webhook in a #{pinboard_name} channel!', delete_after=8)
+                await message.channel.send(f'Unable find a webhook in the #{pinboard_name} channel!', delete_after=8)
                 return
             pins = await message.channel.pins()
+            if len(pins) <= 0:
+                await message.channel.send(
+                    f'Could not find any pins in <#{message.channel.id}>',
+                    delete_after=8)
+                return
             if pins[0].author.color.value == 0x000000:
                 embdcolor = 0xb9bbbe
             else:
@@ -96,17 +114,17 @@ class AutoMod(commands.Cog):
                     enbd.add_field(name='** **',
                                    value=f'[{pins[0].embeds[0].author.name}]({pins[0].embeds[0].author.url})\n{pins[0].embeds[0].description}',
                                    inline=False)
-                    if len(pins[0].embeds[0].image) > 0:
+                    if pins[0].embeds[0].image:
                         enbd.set_image(url=pins[0].embeds[0].image.url)
-                    elif len(pins[0].embeds[0].thumbnail) > 0:
+                    elif pins[0].embeds[0].thumbnail:
                         enbd.set_image(url=pins[0].embeds[0].thumbnail.url)
                         enbd.add_field(name='This pin has a video! :movie_camera:',
                                        value=f'[Jump]({pins[0].jump_url}) to watch!',
                                        inline=False)
                 else:
-                    if len(pins[0].embeds[0].image) > 0:
+                    if pins[0].embeds[0].image:
                         enbd.set_image(url=pins[0].embeds[0].image.url)
-                    elif len(pins[0].embeds[0].thumbnail) > 0:
+                    elif pins[0].embeds[0].thumbnail:
                         enbd.set_image(url=pins[0].embeds[0].thumbnail.url)
                         enbd.add_field(name='This pin may have a video! :movie_camera:',
                                        value=f'[Jump]({pins[0].jump_url}) to watch!',
@@ -146,7 +164,7 @@ class AutoMod(commands.Cog):
 
             enbd.set_footer(text=f'pinned by {message.author}')
 
-            await webhook.send(avatar_url=f'{pins[0].author.avatar_url}',
+            await webhook.send(avatar_url=f'{pins[0].author.avatar.url}',
                                username=pins[0].author.display_name,
                                embed=enbd)
 
@@ -169,5 +187,5 @@ class AutoMod(commands.Cog):
             log.info(f'{message.author} pinned a message in #{message.channel}')
 
 
-def setup(bot):
-    bot.add_cog(AutoMod(bot))
+async def setup(bot):
+    await bot.add_cog(Pinboard(bot))

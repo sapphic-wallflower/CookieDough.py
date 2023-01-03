@@ -53,10 +53,9 @@ class Main(commands.Cog):
         """Log all command failures except command not found"""
         if ctx.command is not None:
             command_info = self.get_command_info(ctx)
-            log.info(f'{ctx.author} attempted to use [{command_info}] but failed with {error} ')
+            log.exception(f'{ctx.author} attempted to use [{command_info}] but failed with {error} ', exc_info=error)
             reply = await ctx.send(f'{type(error).__name__}: {error}')
             await reply.delete(delay=1)
-            raise error
 
     @commands.command()
     async def ping(self, ctx):
@@ -67,11 +66,7 @@ class Main(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def reload(self, ctx, *args):
         """Reload extension(s)"""
-        # Hardcode for Nat - no longer necessary
-        # if not ctx.message.author.permissions_in(ctx.message.channel).administrator:
-        #     if not ctx.message.author.id == 235482330335019008:
-        #         await ctx.channel.send(f"That command is for grown-ups, silly!")
-        #         return
+
         if len(args) == 0:
             args = list(self.bot.extensions.keys())
 
@@ -80,7 +75,7 @@ class Main(commands.Cog):
 
         for name in set(args):
             try:
-                ctx.bot.reload_extension(name)
+                await self.bot.reload_extension(name)
                 reloaded.append(name)
             except Exception as e:
                 log.exception(f'Failed to reload {name}', exc_info=e)
@@ -97,5 +92,5 @@ class Main(commands.Cog):
         await ctx.send(f'```{msg.strip()}```')
 
 
-def setup(bot):
-    bot.add_cog(Main(bot))
+async def setup(bot):
+    await bot.add_cog(Main(bot))

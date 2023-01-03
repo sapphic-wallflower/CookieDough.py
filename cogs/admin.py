@@ -1,7 +1,9 @@
+import asyncio
+
 import discord
+from discord import MessageType, ChannelType
 from discord.ext import commands
 from discord.ext.commands import BadArgument
-import time
 
 
 class Admin(commands.Cog):
@@ -100,12 +102,12 @@ class Admin(commands.Cog):
         timewarning = await ctx.channel.send('Deleting roles with 0 users, this may take awhile...')
         count = 0
         for role in rolelist:
-            if len(role.members) is 0:
+            if len(role.members) == 0:
                 if role.position >= ctx.me.top_role.position or role.position >= ctx.author.top_role.position:
                     count = count + 1  # Tells the user that roles were skipped after rolelist is looped through, instead of sending the original message
                     continue
                 await role.delete(reason=f'{ctx.message.author} used rolepurge')
-        if count is 0:
+        if count == 0:
             await ctx.channel.send('finished deleting roles with 0 users!', delete_after=8)
         if count > 0:
             await ctx.channel.send(f'Finished deleting roles with 0 users!\n\
@@ -115,24 +117,36 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
         await ctx.message.delete()
 
     @commands.Cog.listener()
-    async def on_message(self, ctx):
-        """Automatically delete all non media messages from non-admins in media channels."""
-        if ctx.channel.type.name is 'private' or ctx.author.guild_permissions.administrator is True:
+    async def on_message(self, message: discord.Message):
+        """Automatically delete all non-media messages from non-admins in media channels."""
+        if message.author.id == self.bot.user.id:
             return
-        elif ctx.channel.name.find(
-                'media') is not -1:  # looks for the position of substring. if it's not found, this returns -1.
-            time.sleep(2.500)
-            if len(ctx.embeds) + len(ctx.attachments) < 1:
-                await ctx.delete()
-                await ctx.channel.send('Unfortunately, you can\'t talk in media channels. You have to send either \
+        # We need to check if it is a member because webhook message authors are not members and can't have permissions.
+        if message.author is discord.Member and message.author.guild_permissions.administrator:
+            return
+        if message.type not in (MessageType.default, MessageType.reply):
+            return
+        if message.channel.type != ChannelType.text:
+            return
+        if message.channel.name.find(
+                'media') == -1:  # looks for the position of substring. if it's not found, this returns -1.
+            return
+        # We need to wait a bit in-case discord generates embeds or adds attachments.
+        await asyncio.sleep(2.500)
+        if len(message.embeds) + len(message.attachments) > 0:
+            return
+        try:
+            await message.delete()
+            await message.channel.send('Unfortunately, you can\'t talk in media channels. You have to send either \
 an attachment or embed with your message. If you sent a link, discord timed out and didn\'t embed the message. \
 (discord can struggle to do this when the file size is large, especially when their servers are being slow). \
 You can try again, or you can download whatever is at the link and upload it to discord manually. Don\'t be afraid to \
 try multiple times. This is all a discord limitation we can\'t do anything about at the moment. Sorry :(',
                                        delete_after=12)
-        else:
-            return
+        except discord.NotFound:
+            # Message was already deleted.
+            pass
 
 
-def setup(bot):
-    bot.add_cog(Admin(bot))
+async def setup(bot):
+    await bot.add_cog(Admin(bot))

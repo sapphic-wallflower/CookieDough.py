@@ -3,7 +3,7 @@ import logging
 import aiohttp
 from pathlib import Path
 import discord
-from discord import Embed, Webhook, AsyncWebhookAdapter
+from discord import Webhook
 from discord.ext import commands
 
 IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4', '.webm'}
@@ -84,18 +84,18 @@ class Stamps(commands.Cog):
 
         formatted_message = message.format(" ".join(stamp_names)).strip()
 
-        async def callback(cog, ctx):
-            final_file = None if file is None else discord.File(file)
-            await ctx.send(formatted_message, file=final_file)
-
-        cmd = commands.Command(
-            callback,
+        @commands.command(
             hidden=hidden,  # Don't show category commands in the usual help
             name=name,
             help=f'Info about {name} stamp category'
         )
+        async def cmd(cog: Stamps, ctx: commands.Context):
+            final_file = None if file is None else discord.File(file)
+            await ctx.send(formatted_message, file=final_file)
 
         cmd.cog = self
+        # Workaround for discord.py heuristic for calculating params to skip by if a function is in a class.
+        cmd.params.pop("ctx")
 
         return cmd
 
@@ -150,32 +150,54 @@ class Stamps(commands.Cog):
         message = config['message']
         hidden = config['hidden']
 
-        async def callback(cog, ctx):
+        @commands.command(
+            hidden=hidden,
+            name=name,
+            aliases=aliases,
+            help=f'Send {name} stamp'
+        )
+        async def cmd(cog: commands.Cog, ctx: commands.Context, *args, **kwargs):
             log = logging.getLogger("cogs.stamps")
             final_file = None if file is None else discord.File(file)
-            channel_name = ctx.channel.name
+            is_thread = isinstance(ctx.channel, discord.Thread)
+            channel = ctx.channel.parent if is_thread else ctx.channel
+            thread = ctx.channel if is_thread else None
+            channel_name = channel.name
             wh_info_found = None
-            for wh_info in await ctx.guild.webhooks():
-                if wh_info.channel.name == channel_name:
+            for wh_info in await channel.webhooks():
+                if wh_info.token is not None:
                     wh_info_found = wh_info
                     break
             if wh_info_found is None:
-                await ctx.send(
-                    f'Missing webhook for #{channel_name}',
-                    delete_after=8)
-                return
+                # Try to make a new webhook for this channel.
+                wh_info_found = await channel.create_webhook(name="cookiedough")
+                if wh_info_found is None:
+                    await ctx.send(
+                        f'Failed to create webhook for #{channel_name}',
+                        delete_after=8)
+                    return
             async with aiohttp.ClientSession() as session:
-                webhook = Webhook.from_url(wh_info_found.url, adapter=AsyncWebhookAdapter(session))
+                webhook = Webhook.from_url(wh_info_found.url, session=session)
                 if webhook is None:
                     log.error(f'Unable find a webhook in #{channel_name}!')
                     await ctx.send(f'Unable find a webhook in #{channel_name}!', delete_after=8)
                     return
                 await ctx.message.delete()
-                await webhook.send(avatar_url=f'{ctx.author.avatar_url}', username=ctx.author.display_name, content=message, file=final_file)
+                kwargs_extra = dict()
+                if is_thread:
+                    kwargs_extra['thread'] = thread
+                await webhook.send(
+                    avatar_url=f'{ctx.author.avatar.url}',
+                    username=ctx.author.display_name,
+                    content=message,
+                    file=final_file,
+                    **kwargs_extra
+                )
 
-
-        cmd = commands.Command(callback, hidden=hidden, name=name, aliases=aliases, help=f'Send {name} stamp')
         cmd.cog = self
+        # Workaround for discord.py heuristic for calculating params to skip by if a function is in a class.
+        cmd.params.pop("ctx")
+
         return cmd
 
     @commands.command()
@@ -185,5 +207,5 @@ class Stamps(commands.Cog):
         await ctx.send(f'Here\'s a list of our stamp packs!\nType `{self.bot.command_prefix}[pack-name]` to see a list of the stamps inside of that pack.```{categories}``` Also, you can add stamps in the `!shop`!'.strip())
 
 
-def setup(bot):
-    bot.add_cog(Stamps(bot))
+async def setup(bot):
+    await bot.add_cog(Stamps(bot))
