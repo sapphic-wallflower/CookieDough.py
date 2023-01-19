@@ -14,36 +14,36 @@ class Pinboard(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        n = 10
+        f"""auto-pin messages after {n} human 📌 reactions"""
+        # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
+        if reaction.emoji == '📌' and reaction.count == n+1 and reaction.me:
+            await reaction.message.pin()
+            await reaction.remove(self.bot.user)
+            log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
+        else:
+            return
+
+    @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         """When a message is pinned, push an embed of that message through a webhook"""
         if message.type != MessageType.pins_add:
             return
         everyone = None
         fwiend = None
-        gradeschooler = None
         for role in message.guild.roles:
             if role.name.lower() == "@everyone":
                 everyone = role
             if role.name.lower() == "fwiend":
                 fwiend = role
-            if role.name.lower() == "grade schooler":
-                gradeschooler = role
-
         perms_channel = message.channel.parent if isinstance(message.channel, discord.Thread) else message.channel
         ovr_everyone = perms_channel.overwrites_for(everyone).read_messages if everyone is not None else None
         ovr_fwiend = perms_channel.overwrites_for(fwiend).read_messages if fwiend is not None else None
-        ovr_gradeschooler = perms_channel.overwrites_for(gradeschooler).read_messages if gradeschooler is not None else None
         pinboard_name = None
-        if ovr_everyone is False or ovr_fwiend is False:
-            # Is a private channel
-            if ovr_gradeschooler is True:
-                # send to gs-pinboard
-                pinboard_name = 'gs-pinboard'
-            else:
-                # send an error
-                pass
-        else:
-            # Is a public channel so send to global
+        if ovr_everyone is False or ovr_fwiend is False:  # skip if the channel is private
+            pass
+        else:  # pinned msg is in public channel, so we'll define the name of the channel it goes to
             pinboard_name = '📌pinboard'
         if pinboard_name is None:
             await message.channel.send(
@@ -167,8 +167,12 @@ class Pinboard(commands.Cog):
             await webhook.send(avatar_url=f'{pins[0].author.avatar.url}',
                                username=pins[0].author.display_name,
                                embed=enbd)
-
-            keeppin = await message.channel.send('Do you want me to keep the message pinned in here? (yes/no)')
+            if message.author.id == self.bot.user.id:
+                await pins[0].unpin()
+                log.info(f'moved the message from {message.channel} to pinboard')
+                return
+            else:
+                keeppin = await message.channel.send('Do you want me to keep the message pinned in here? (yes/no)')
 
             def check(m):
                 return m.channel == message.channel and m.author == message.author and m.content.lower() in ('yes', 'no')

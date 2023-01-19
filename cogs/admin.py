@@ -118,7 +118,7 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        """Automatically delete all non-media messages from non-admins in media channels."""
+        """Automatically delete non-media messages in media channels and add 📌 reaction to media messages"""
         if message.author.id == self.bot.user.id:
             return
         # We need to check if it is a member because webhook message authors are not members and can't have permissions.
@@ -134,6 +134,7 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
         # We need to wait a bit in-case discord generates embeds or adds attachments.
         await asyncio.sleep(2.500)
         if len(message.embeds) + len(message.attachments) > 0:
+            await message.add_reaction('📌')  # doesn't check if channel is private, only if media isn't in the name
             return
         try:
             await message.delete()
