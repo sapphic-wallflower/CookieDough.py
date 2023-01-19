@@ -14,16 +14,22 @@ class Pinboard(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
+    async def on_raw_reaction_add(self, payload,):
         n = 10
         f"""auto-pin messages after {n} human 📌 reactions"""
-        # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
-        if reaction.emoji == '📌' and reaction.count == n+1 and reaction.me:
-            await reaction.message.pin()
-            await reaction.remove(self.bot.user)
-            log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
-        else:
-            return
+        channel = self.bot.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        for reaction in message.reactions:
+            if reaction.emoji == '📌':
+                # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
+                if reaction.count == n+1 and reaction.me:
+                    await reaction.remove(self.bot.user)
+                    await message.pin()
+                    log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
+                if reaction.count == 1 and reaction.me is False:
+                    await message.add_reaction('📌')  # allows cookie to add pushpin emoji to non-media message if a user reacts first
+                    log.info('added a 📌 reaction to a non-media message since someone else did first')
+                return
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
