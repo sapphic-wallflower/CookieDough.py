@@ -15,7 +15,7 @@ class Pinboard(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload,):
-        n = 10
+        n = 15
         f"""auto-pin messages after {n} human 📌 reactions"""
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
