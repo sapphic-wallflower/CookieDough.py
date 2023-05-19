@@ -29,6 +29,12 @@ class Pinboard(commands.Cog):
                         log.error(f'error in ban list. line: {line}')
         except:
             log.error('couldnt read the pinboard banlist')
+            try:
+                f = open(filename, 'x')
+                f.close()
+                log.info('blank pinboard banlist created. add IDs to add usage bans.')
+            except:
+                log.error('couldnt create the pinboard banlist either! huge problem! report it to Emmi!')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload,):
