@@ -14,7 +14,7 @@ class Pinboard(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         global banlist
-        filename = "pinboard.ban"
+        filename = "pinboard.banlist"
         banlist = []
         try:
             with open(filename,"r") as fb:
