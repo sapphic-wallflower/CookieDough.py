@@ -10,8 +10,25 @@ log = logging.getLogger("cogs.pinboard")
 
 
 class Pinboard(commands.Cog):
+    banlist = []
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        global banlist
+        filename = "pinboard.ban"
+        banlist = []
+        try:
+            with open(filename,"r") as fb:
+                file = fb.read().split()
+                for line in file:
+                    if line == "": continue
+                    if not line.isdigit(): continue
+                    try:
+                        uid = int(line)
+                        banlist.append(uid)
+                    except:
+                        log.error(f'error in ban list. line: {line}')
+        except:
+            log.error('couldnt read the pinboard banlist')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload,):
@@ -24,8 +41,11 @@ class Pinboard(commands.Cog):
                 # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
                 if reaction.count == n+1 and reaction.me:
                     await reaction.remove(self.bot.user)
-                    await message.pin()
-                    log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
+                    if not message.author.id in banlist:
+                        await message.pin()
+                        log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
+                    else:
+                        log.info('bot wouldve added to pinboard, but the user is banned from appearing in pinboard')
                 if reaction.count == 1 and reaction.me is False:
                     await message.add_reaction('📌')  # allows cookie to add pushpin emoji to non-media message if a user reacts first
                     log.info('added a 📌 reaction to a non-media message since someone else did first')
