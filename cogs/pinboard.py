@@ -41,7 +41,7 @@ class Pinboard(commands.Cog):
                 # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
                 if reaction.count == n+1 and reaction.me:
                     await reaction.remove(self.bot.user)
-                    if not message.author.id in banlist:
+                    if message.author.id not in banlist:
                         await message.pin()
                         log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
                     else:
