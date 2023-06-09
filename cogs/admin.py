@@ -10,7 +10,7 @@ class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True, read_message_history=True)
     async def purge(self, ctx: commands.context.Context, n: int):
@@ -21,7 +21,7 @@ class Admin(commands.Cog):
         reply = await ctx.send(f'{len(deleted) - 1} message(s) purged')
         await reply.delete(delay=1)
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_guild=True)
     async def status(self, ctx):
         """Set the bot's playing status"""
@@ -34,7 +34,7 @@ class Admin(commands.Cog):
             await self.bot.change_presence(activity=discord.Game(f"{command_prefix}help | {message}"))
             await ctx.channel.send(f"Set status to \"Playing **{command_prefix}help | {message}**\"!")
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_guild=True)
     async def say(self, ctx):
         """Have Cookie Dough repeat a phrase in a channel"""
@@ -51,7 +51,7 @@ class Admin(commands.Cog):
             if channel.id == target_channel_id:
                 await channel.send(f"{msg}")
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_guild=True)
     async def edit(self, ctx, *args):
         """Have Cookie Dough replace the contents of a message she sent using .say"""
@@ -69,7 +69,7 @@ class Admin(commands.Cog):
         content = ctx.message.content.replace(f'{command_prefix}edit {target_message.id} ', '')
         await target_message.edit(content=f"{content}")
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True, read_message_history=True)
     async def pinpurge(self, ctx, n: int):
@@ -93,7 +93,7 @@ class Admin(commands.Cog):
         await timewarning.delete()
         await ctx.message.delete()
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_roles=True)
     @commands.bot_has_permissions(manage_roles=True)
     async def rolepurge(self, ctx):
