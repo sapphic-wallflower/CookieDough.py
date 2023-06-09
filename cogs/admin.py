@@ -10,7 +10,7 @@ class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True, read_message_history=True)
     async def purge(self, ctx: commands.context.Context, n: int):
@@ -69,7 +69,7 @@ class Admin(commands.Cog):
         content = ctx.message.content.replace(f'{command_prefix}edit {target_message.id} ', '')
         await target_message.edit(content=f"{content}")
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True, read_message_history=True)
     async def pinpurge(self, ctx, n: int):
@@ -93,7 +93,7 @@ class Admin(commands.Cog):
         await timewarning.delete()
         await ctx.message.delete()
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_roles=True)
     @commands.bot_has_permissions(manage_roles=True)
     async def rolepurge(self, ctx):
