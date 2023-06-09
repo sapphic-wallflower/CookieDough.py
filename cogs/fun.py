@@ -6,7 +6,7 @@ class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(aliases=["flip", "coinflip", "flipcoin"])
+    @commands.hybrid_command(aliases=["flip", "coinflip", "flipcoin"])
     async def coin(self, ctx, *args):
         """Randomly selects Heads/Tails"""
         result = random.choice(['Heads', 'Tails'])
@@ -22,7 +22,7 @@ class Fun(commands.Cog):
     #     result = random.choice(['1', '2', '3', '4', '5', '6'])
     #     await ctx.send(f'<@{ctx.author.id}> You got **{result}**!:game_die:')
 
-    @commands.command(aliases=["dice"])
+    @commands.hybrid_command(aliases=["dice"])
     async def roll(self, ctx, sides="6", num="1"):
         """Rolls dice.
         .roll - roll a 6 sided die
@@ -63,7 +63,7 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
             await ctx.send(f'<@{ctx.author.id}> You got **{output}**!:game_die:')
 
 
-    @commands.command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
+    @commands.hybrid_command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
     async def fortune(self, ctx, *args):
         """Fortune Cookies, baked in Cookie Dough's Kitchen"""
         # 8 ball balance is based on how many replies there are. Currently there are
