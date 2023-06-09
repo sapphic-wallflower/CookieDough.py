@@ -59,7 +59,7 @@ class Main(commands.Cog):
             reply = await ctx.send(f'{type(error).__name__}: {error}')
             await reply.delete(delay=1)
 
-    @commands.command()
+    @commands.hybrid_command()
     async def ping(self, ctx):
         """Replies with pong and the latency"""
         await ctx.send(f':ping_pong: Pong!`{round(ctx.bot.latency * 1000)} ms`')
