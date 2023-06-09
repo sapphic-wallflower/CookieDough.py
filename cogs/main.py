@@ -64,7 +64,7 @@ class Main(commands.Cog):
         """Replies with pong and the latency"""
         await ctx.send(f':ping_pong: Pong!`{round(ctx.bot.latency * 1000)} ms`')
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def reload(self, ctx, *args):
         """Reload extension(s)"""
