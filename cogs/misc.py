@@ -7,7 +7,7 @@ class Misc(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(aliases=["diaperserver"])
+    @commands.hybrid_command(aliases=["diaperserver"])
     async def discussion(self, ctx):
         """copypasta command explaining why we allow and encourage serious or adult conversations"""
         await ctx.message.delete()
@@ -22,7 +22,7 @@ If it makes you uncomfortable to be around these topics, we have other \
 channels, and there\'s even other servers you can use in the meantime while the discussion is happening. Thanks \
 for your understanding.')
 
-    @commands.command()
+    @commands.hybrid_command()
     async def mediaguideline(self, ctx):
         """copypasta command explaining what kind of images are allowed in media channels"""
         await ctx.message.delete()
