@@ -14,6 +14,8 @@ class Main(commands.Cog):
         log.info(f'Cookie Dough is logged in as {self.bot.user}')
         await self.bot.change_presence(activity=discord.Game(f"{self.bot.command_prefix}help"))
         log.info(f'Set {self.bot.user} status to \"Playing {self.bot.command_prefix}help\"')
+        
+        await self.bot.tree.sync() #Sync slash command tree
 
     def get_command_info(self, ctx):
         """Get command and args information from context"""
@@ -89,7 +91,9 @@ class Main(commands.Cog):
         if len(failed) > 0:
             msg = msg + f'Failed: {" ".join(failed)}\n'
 
+        await self.bot.tree.sync() #Sync slash command tree
         await ctx.send(f'```{msg.strip()}```')
+        
 
 
 async def setup(bot):
