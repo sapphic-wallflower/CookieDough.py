@@ -34,7 +34,7 @@ class Admin(commands.Cog):
             await self.bot.change_presence(activity=discord.Game(f"{command_prefix}help | {message}"))
             await ctx.channel.send(f"Set status to \"Playing **{command_prefix}help | {message}**\"!")
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def say(self, ctx):
         """Have Cookie Dough repeat a phrase in a channel"""
@@ -51,7 +51,7 @@ class Admin(commands.Cog):
             if channel.id == target_channel_id:
                 await channel.send(f"{msg}")
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def edit(self, ctx, *args):
         """Have Cookie Dough replace the contents of a message she sent using .say"""
