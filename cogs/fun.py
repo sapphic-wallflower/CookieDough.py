@@ -7,7 +7,7 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.hybrid_command(aliases=["flip", "coinflip", "flipcoin"])
-    async def coin(self, ctx, *args):
+    async def coin(self, ctx):
         """Randomly selects Heads/Tails"""
         result = random.choice(['Heads', 'Tails'])
         await ctx.send(f'<@{ctx.author.id}> You got **{result}**!')
@@ -64,7 +64,7 @@ Could you try it like this? <:QuestionBun:588539387688517642> \n\
 
 
     @commands.hybrid_command(aliases=["8ball", "8_ball","eight_ball", "fortune_cookie"])
-    async def fortune(self, ctx, *args):
+    async def fortune(self, ctx):
         """Fortune Cookies, baked in Cookie Dough's Kitchen"""
         # 8 ball balance is based on how many replies there are. Currently there are
         # 10 yes, 2 y'know/you decide, 3 chat decides, and 5 no. meaning that yes has 1/2 chance, and no has 1/4 chance.
