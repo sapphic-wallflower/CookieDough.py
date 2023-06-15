@@ -21,7 +21,7 @@ class Admin(commands.Cog):
         reply = await ctx.send(f'{len(deleted) - 1} message(s) purged')
         await reply.delete(delay=1)
 
-    @commands.command()
+    @commands.hybrid_command()
     @commands.has_permissions(manage_guild=True)
     async def status(self, ctx):
         """Set the bot's playing status"""
