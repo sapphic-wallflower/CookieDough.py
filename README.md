@@ -12,7 +12,7 @@
 A cookie-loving Discord bot powered by [discord.py](https://github.com/Rapptz/discord.py), designed specifically for the Gay Baby Jail [Discord server](https://discord.gg/abdl).
 
 # Features
-* **Stickers** : Image and Video stickers that work without Discord Nitro
+* **Stamps** : Image and Video stamps that work like stickers and function without Discord Nitro
 * **Easy installation** : Set up and run within roughly 10 minutes
 * **Extendable** : Provides an extendable framework from which to build Discord bots
 
