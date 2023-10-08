@@ -14,7 +14,7 @@ class Misc(commands.Cog):
         await ctx.send('''
 ## Gay Baby Jail - Frequently Asked Questions
 Below is a list of commands you can use to either learn more about the server or quickly educate others
-* Roles and Economy: `.economy`, `.allroles`, `.diapertraining`
+* Roles & Economy: `.economy`, `.allroles`, `.diapertraining`, `.verify`, `.vetted`
 * Bots: `.pluralkit`, `.modmail`, `.help`, `pk;help`
 * Other: `.feedback`, `.roleplay`, `.textrules`, `.lights`, `.discussion`, `.mediaguide`
 ''')
