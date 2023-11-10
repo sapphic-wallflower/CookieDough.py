@@ -69,12 +69,13 @@ visit in the meantime as well. Thank you for your understanding.
         """copypasta command explaining modmail"""
         await ctx.message.delete()
         await ctx.send('''\
-If you'd like to reach out to the mod team, please send a Direct-Message to <@!575252669443211264> instead of our DMs.
-This allows your message to be seen by all of us, which helps us to collaborate as a team on issues. As well, any mod \
-that sees it can respond to it as soon as possible. Someone who's shown as online doesn't mean they're actually there, \
-just as being idle doesn't mean they aren't.
-ModMail also separates administrative issues from casual conversation in our DMs, which is a big help to us.
-Thank you for understanding!
+# How do I contact the GBJ staff?
+Head to <#1172337920431104053>, and click `Open a ticket!`. This will put you in a channel with staff only, where you can express your concerns.
+## Why can't I just send a PM to staff members?
+Staff members are users of the server, first and foremost. We don't want to be a looming authority over the masses, we want to enjoy the server in the same way you do. This allows us to keep our PMs clear of formalities, and fosters friendships, rather than a power dynamic. 
+## What if I have a complaint against another staff member?
+If you need to submit a formal complaint against another moderator, we still urge you to use the ticket system. Each ticket has a robust logging system, allowing everyone to see the transcript of a ticket's message history. We use this to keep each staff member accountable. 
+If you believe it's urgent, and the server is in danger, you may message any of the available babysitters individually. Abusing this may result in a warning.
 ''')
 
     @commands.command(aliases=["mediaguide", "media", "mediaguidelines"])
