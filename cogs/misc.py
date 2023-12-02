@@ -24,30 +24,23 @@ Below is a list of commands you can use to either learn more about the server or
         """copypasta command explaining all the ways to earn cookies in the economy"""
         await ctx.message.delete()
         await ctx.send('''
-## Earning Cookies🍪:
-* Use `/work` or `!work`
- * You'll earn 75-125🍪. You're able to do this every eight hours.
-* If you're boosting the server, use `/collect-income` or `!collectincome`
- * you'll earn 1000🍪. You can do this once a month.
-* Post content in <#466529435861123072> and/or <#395817140181008394>
- * You get get 35🍪 for each 🍪 reaction on your posts in these channels.
- * If your message makes it to <#637898801352540176>, you earn 150🍪.
-  * NOTE: This is done manually. If you'd like to collect your Cookies🍪, ping `@girl.kisser` in <#395837746083528704> \
-with how many 🍪 reactions your posts have  or if your post was sent to <#637898801352540176>. 
-* Post content in the media channels.
- * If your message gets 15 human 📌 reactions, it'll be sent to <#637898801352540176>. This will earn you 150🍪.
-  * NOTE: This is done manually. If you'd like to collect your Cookies🍪, ping `@girl.kisser` in <#395837746083528704>
-* Complete tasks for (or gamble with) other users in <#399280851856130050>
- * A list of tasks are posted in the pinned messages of that channel if you need some ideas.
-## Spending Cookies🍪:
-* Use `!store` to see what items we have available in the shop.
-* Use `!buy [item name]` to buy an item from the shop.
-* Use `!pay [@username] [amount]` to give Cookies🍪 to other users.
-## Miscellaneous:
-* Use `!bal` to check your Cookie🍪 balance. 
- * (You can also check the balance of another user by using `!bal [@ping]`)
-* Use `.allroles` to see a list of all the custom roles on the server.
-* Use `.help` to see a list of commands provided by me, <@!641788291225747487>!
+# Learn how to succeed in the GBJ economy
+## Earning Cookies
+### Commands
+- All users can use `/work` in <#395837746083528704> every eight hours to earn 75–125 :cookie:
+- Server boosters can user `/collect` in <#395837746083528704> once per month to earn 1000 :cookie:
+### Posting Content
+- In <#466529435861123072> and <#395817140181008394>, users can react to your posts with a :cookie:. Each reaction is worth 35 :cookie:.
+- In <#395817177904840705>, <#396186429467656192>, <#928419082523541574>, <#468644623578038282>, or <#468644693669052417> users can react to your posts with a :pushpin:. If you get 16, your post will be sent to the #📌pinboard. Each post will earn you 150 :cookie:.
+Redemption for these is manual. To claim your cookies, #🎫contact-staff. In your ticket, post the link to your content. If you're claiming :cookie: reactions, be sure to include how many reactions you received next to each post.
+### Community Engagement
+- In <#399280851856130050>, you can complete with other users in activities for each others :cookie:. A list of tasks can be found in the pinned messages if you need ideas.
+- Use `!pay @username {amount}` to pay someone cookies. 
+## Spending Cookies
+- In <#395837746083528704>, you can browse the `/item store`. To buy an item, type `/item buy`.
+## Useful Information
+- To check your :cookie: balance, type `/bal` in <#395837746083528704>. To check someone else's balance, type `/bal @username`.
+- To see all the roles you can purchase, type `.allroles`.
 ''')
 
     @commands.command(aliases=["diaperserver"])
