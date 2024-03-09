@@ -170,9 +170,13 @@ class Pinboard(commands.Cog):
 
             enbd.set_footer(text=f'pinned by {message.author}')
 
-            await webhook.send(avatar_url=f'{pins[0].author.avatar.url}',
+            # wait for the webhook msg to be sent
+            webhook_msg = await webhook.send(avatar_url=f'{pins[0].author.avatar.url}',
                                username=pins[0].author.display_name,
-                               embed=enbd)
+                               embed=enbd, wait=True)
+            # publish the webhook message (if news channel)
+            if pinboard_channel.is_news():
+                await webhook_msg.publish()
             if message.author.id == self.bot.user.id:
                 await pins[0].unpin()
                 log.info(f'moved the message from {message.channel} to pinboard')
