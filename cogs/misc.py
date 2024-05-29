@@ -34,7 +34,7 @@ Below is a list of commands you can use to either learn more about the server or
 - In <#395817177904840705>, <#396186429467656192>, <#928419082523541574>, <#468644623578038282>, or <#468644693669052417> users can react to your posts with a :pushpin:. If you get 16, your post will be sent to the #📌pinboard. Each post will earn you 150 :cookie:.
 Redemption for these is manual. To claim your cookies, <#1172337920431104053>. In your ticket, post the link to your content. If you're claiming :cookie: reactions, be sure to include how many reactions you received next to each post.
 ### Community Engagement
-- In <#399280851856130050>, you can compete with other users in activities for each others :cookie:. A list of tasks can be found in the pinned messages if you need ideas.
+- In <#1066605514466799616>, you can compete with other users in activities for each others :cookie:. A list of tasks can be found in the pinned messages if you need ideas.
 - Use `!pay @username {amount}` to pay someone cookies. 
 ## Spending Cookies
 - In <#395837746083528704>, you can browse the `/item store`. To buy an item, type `/item buy`.
