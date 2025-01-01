@@ -1,10 +1,11 @@
 import logging
-
-import discord
-from discord import MessageType, Embed, Webhook
-from discord.ext import commands
 import aiohttp
 import asyncio
+import time
+import discord
+from discord import MessageType, ChannelType, Embed, Webhook
+from discord.ext import commands
+
 
 log = logging.getLogger("cogs.pinboard")
 
@@ -17,6 +18,8 @@ class Pinboard(commands.Cog):
     async def on_raw_reaction_add(self, payload,):
         n = 15
         f"""auto-pin messages after {n} human 📌 reactions"""
+        if message.type == MessageType.pins_add: #ignore [user] pinned a message server messages
+            return
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         for reaction in message.reactions:
@@ -24,6 +27,8 @@ class Pinboard(commands.Cog):
                 # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
                 if reaction.count == n+1 and reaction.me:
                     await reaction.remove(self.bot.user)
+                    if time.time() - message.created_at.timestamp() > 7889399: # 7889399 being 3 months in seconds
+                        return
                     await message.pin()
                     log.info(f'bot pinned a message because of {reaction.count} 📌 reactions on message')
                 if reaction.count == 1 and reaction.me is False:
@@ -34,6 +39,10 @@ class Pinboard(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         """When a message is pinned, push an embed of that message through a webhook"""
+
+        if message.channel.name.find('pinboard') > -1 and message.author != discord.Member: #publish the message if its a webhook message in #pinboard
+            await message.publish()
+
         if message.type != MessageType.pins_add:
             return
         everyone = None
