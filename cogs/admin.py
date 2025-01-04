@@ -118,12 +118,12 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message): # known bug: wont act as media channel if channel contains text 'original' or 'selfies'
-        """Automatically delete non-media messages in media channels and add 📌 reaction to media messages"""
+        """Automatically delete non-media messages in media channels | add 📌 and/or 🍪 reaction to media messages"""
         if message.channel.name.find('original') > -1 or message.channel.name.find('selfies') > -1:  # looks for the position of substring. if it's not found, this returns -1.
             await asyncio.sleep(2.500) #wait for embeds
             if len(message.embeds) + len(message.attachments) > 0:
                 await message.add_reaction('📌')
-                await message.add_reaction('🍪')
+                await message.add_reaction('<:CookieHeart:673558008185487381>')
                 return
         
         if message.author.id == self.bot.user.id:
