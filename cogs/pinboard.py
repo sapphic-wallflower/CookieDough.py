@@ -18,10 +18,10 @@ class Pinboard(commands.Cog):
     async def on_raw_reaction_add(self, payload,):
         n = 15
         f"""auto-pin messages after {n} human 📌 reactions"""
-        if message.type == MessageType.pins_add: #ignore [user] pinned a message server messages
-            return
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
+        if message.type == MessageType.pins_add: #ignore [user] pinned a message server messages
+            return
         for reaction in message.reactions:
             if reaction.emoji == '📌':
                 # reaction.me checks if bot reacted, if False that means the message has already been pinned and should return.
