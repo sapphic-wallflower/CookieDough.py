@@ -40,7 +40,7 @@ class Fun(commands.Cog):
         if not num.isdigit():
             num = "1"
         if not sides.isdigit():
-            await ctx.send(f'<@{ctx.author.id}> I\'m not sure i get it... <:MeruSad:633650580660682762> \
+            await ctx.send(f'<@{ctx.author.id}> I\'m not sure i get it... <:MeruSad:935943233626861568> \
 Could you try it like this? <:QuestionBun:588539387688517642> \n\
 `.roll d[number of sides] [number of dice]`')
         elif int(sides) == 0 or int(num) == 0:

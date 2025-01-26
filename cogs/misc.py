@@ -10,7 +10,6 @@ class Misc(commands.Cog):
     @commands.command()
     async def faq(self, ctx):
         """FAQ/Copypasta list"""
-        await ctx.message.delete()
         await ctx.send('''
 ## Gay Baby Jail - Frequently Asked Questions
 Below is a list of commands you can use to either learn more about the server or quickly educate others
@@ -19,10 +18,9 @@ Below is a list of commands you can use to either learn more about the server or
 * Other: `.feedback`, `.roleplay`, `.textrules`, `.lights`, `.discussion`, `.mediaguide`
 ''')
 
-    @commands.command()
+    @commands.hybrid_command()
     async def economy(self, ctx):
         """copypasta command explaining all the ways to earn cookies in the economy"""
-        await ctx.message.delete()
         await ctx.send('''
 # Learn how to succeed in the GBJ economy
 ## Earning Cookies
@@ -43,10 +41,9 @@ Redemption for these is manual. To claim your cookies, <#1172337920431104053>. I
 - To see all the roles you can purchase, type `.allroles`.
 ''')
 
-    @commands.command(aliases=["diaperserver"])
+    @commands.hybrid_command(aliases=["diaperserver"])
     async def discussion(self, ctx):
         """copypasta command explaining why we allow and encourage serious or adult conversations"""
-        await ctx.message.delete()
         await ctx.send(
             '''Gay Baby Jail is not _just_ a diaper server. Its mostly a hangout server where diapers are normalized. \
 We don't allow roleplay or baby-talk in the generals, and we're all adults. While serious topics aren't always being \
@@ -57,10 +54,9 @@ If the current topic makes you uncomfortable, we have other channels, and there'
 visit in the meantime as well. Thank you for your understanding.
 ''')
 
-    @commands.command()
+    @commands.hybrid_command()
     async def modmail(self, ctx):
         """copypasta command explaining modmail"""
-        await ctx.message.delete()
         await ctx.send('''\
 # How do I contact the GBJ staff?
 Head to <#1172337920431104053>, and click `Open a ticket!`. This will put you in a channel with staff only, where you can express your concerns.
@@ -71,10 +67,9 @@ If you need to submit a formal complaint against another moderator, we still urg
 If you believe it's urgent, and the server is in danger, you may message any of the available babysitters individually. Abusing this may result in a warning.
 ''')
 
-    @commands.command(aliases=["mediaguide", "media", "mediaguidelines"])
+    @commands.hybrid_command(aliases=["mediaguide", "media", "mediaguidelines"])
     async def mediaguideline(self, ctx):
         """copypasta command explaining what kind of images are allowed in media channels"""
-        await ctx.message.delete()
         await ctx.send('''\
 Images which have the intention of being (abdl-)memes rather than "abdl-media" should be posted in \
 <#639395194898219011>, and should not be posted in media channels. Posts in media channels must somehow pass as art, \
@@ -83,10 +78,9 @@ or aesthetic response in greater or equal proportion to memetic value. Bonus poi
 it when you see it".
 [**Here's a few examples of what and what not to post in media channels (img-link)**](https://files.catbox.moe/e3vxwj.png)''')
 
-    @commands.command(aliases=["pk"])
+    @commands.hybrid_command(aliases=["pk"])
     async def pluralkit(self, ctx):
         """copypasta command explaining what pluralkit is"""
-        await ctx.message.delete()
         await ctx.send('''
 ## ____Why Are There Bots Talking?____
 <@!466378653216014359> is a bot designed for plural systems that use Discord. It allows you to register systems, \
@@ -102,10 +96,9 @@ You can learn more about the bot on [PluralKit's website](<https://pluralkit.me/
 or by using `pk;help in <#395837746083528704>`
 You can learn more about plurality on [MoreThanOne.info](<https://morethanone.info/>)''')
 
-    @commands.command(aliases=["listroles", "roleslist", "rolelist"])
+    @commands.hybrid_command(aliases=["listroles", "roleslist", "rolelist"])
     async def allroles(self, ctx):
         """copypasta command that lists all available roles"""
-        await ctx.message.delete()
         await ctx.send('''\
 ## All Custom Roles
 We had to move the list to [this google sheet](<https://bit.ly/3Bd1Zbq>), it doesn't fit in discord anymore!
@@ -114,10 +107,9 @@ We had to move the list to [this google sheet](<https://bit.ly/3Bd1Zbq>), it doe
 `.diapertraining` in <#395837746083528704> for more info.\
 ''')
 
-    @commands.command()
+    @commands.hybrid_command()
     async def diapertraining(self, ctx):
         """copypasta explaining the diapertraining role"""
-        await ctx.message.delete()
         await ctx.send('''\
 ## <:PottyBanned:779149826154823691> What Is This?
 When the Diaper Training role is pinged, all users must prove they're wearing a diaper with a picture. \
@@ -136,20 +128,9 @@ If you would rather not pay, ping `@girl.kisser` or `@Glasswalker` to remove the
 **If you're caught lying or reusing an old photo, you will be banned from the server for 14 days.**
 ''')
 
-    @commands.command(aliases=["suggest", "suggestion"])
-    async def feedback(self, ctx):
-        """copypasta command template"""
-        await ctx.message.delete()
-        await ctx.send('''\
-If you'd like to submit feedback or suggestions to the server, it's bots, etc., you can use \
-`?suggest [your suggestion]`. This will create a poll which is sent to <#466459060258996225>, which helps us to gauge \
-interest and support.
-''')
-
-    @commands.command(aliases=["rule2", "rp"])
+    @commands.hybrid_command(aliases=["rule2", "rp"])
     async def roleplay(self, ctx):
-        """copypasta command template"""
-        await ctx.message.delete()
+        """copypasta explaining our roleplay rule"""
         await ctx.send('''\
 ## Rule 2: No Roleplay (or baby-talk)
 We understand this is a very divisive rule which many don't understand. In short, we haven't curated GBJ to be a \
@@ -177,20 +158,18 @@ can also use `.stamps` to get a list of stamps provided by me, <@!64178829122574
 completely free. Albeit they only work in servers I'm a part of.
 ''')
 
-    @commands.command(aliases=["rules"])
+    @commands.hybrid_command(aliases=["rules"])
     async def textrules(self, ctx):
-        """copypasta command template"""
-        await ctx.message.delete()
+        """copypasta linking our rules on gdocs"""
         await ctx.send('''\
 [Here's a link to our current rules in plain text]\
 (https://docs.google.com/document/d/13pxzthxFImkSLBOit4u4J6QXi2_5cbVq41qcwcnBYFE). \
 You can make a copy by clicking `File > Make a copy` if you need to make it more readable. 
 ''')
 
-    @commands.command()
+    @commands.hybrid_command()
     async def lights(self, ctx):
-        """copypasta command template"""
-        await ctx.message.delete()
+        """copypasta for lights"""
         await ctx.send('''\
 ## Consent Indicators (aka lights)
 * <:LightGreen:749514803822854224>: All clear, everything is going well. I consent.

@@ -10,7 +10,6 @@ IMAGE_SUFFIXES = {'.gif', '.jpeg', '.jpg', '.png', '.mp4', '.webm'}
 IMAGE_AND_JSON_SUFFIXES = set(IMAGE_SUFFIXES)
 IMAGE_AND_JSON_SUFFIXES.add('.json')
 
-
 def snake_to_camel(name):
     """Converts snake_case to CamelCase"""
     return "".join(word.capitalize() for word in name.split("_"))
@@ -200,11 +199,11 @@ class Stamps(commands.Cog):
 
         return cmd
 
-    @commands.command()
+    @commands.hybrid_command()
     async def stamps(self, ctx):
         """Prints out a list of stamp categories"""
         categories = " ".join(self.category_names)
-        await ctx.send(f'Here\'s a list of our stamp packs!\nType `{self.bot.command_prefix}[pack-name]` to see a list of the stamps inside of that pack.```{categories}``` Also, you can add stamps in the `!shop`!'.strip())
+        await ctx.send(f'Here\'s a list of our stamp packs!\nType `{self.bot.command_prefix}[pack-name]` to see a list of the stamps inside of that pack.```{categories}``` Also, you can add stamps in the `!shop`!\nPlease note that these cannot be invoked as a / command'.strip())
 
 
 async def setup(bot):

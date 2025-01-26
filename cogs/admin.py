@@ -1,5 +1,4 @@
 import asyncio
-
 import discord
 from discord import MessageType, ChannelType
 from discord.ext import commands
@@ -21,7 +20,7 @@ class Admin(commands.Cog):
         reply = await ctx.send(f'{len(deleted) - 1} message(s) purged')
         await reply.delete(delay=1)
 
-    @commands.hybrid_command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def status(self, ctx):
         """Set the bot's playing status"""
@@ -116,38 +115,40 @@ Note: {count} role(s) with no members had to be skipped due to having a greater 
         await timewarning.delete()
         await ctx.message.delete()
 
+
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
-        """Automatically delete non-media messages in media channels and add 📌 reaction to media messages"""
+    async def on_message(self, message: discord.Message): # known bug: wont act as media channel if channel contains text 'original' or 'selfies'
+        """Automatically delete non-media messages in media channels | add 📌 and/or 🍪 reaction to media messages"""
+        if message.channel.name.find('original') > -1 or message.channel.name.find('selfies') > -1:  # looks for the position of substring. if it's not found, this returns -1.
+            await asyncio.sleep(2.500) #wait for embeds
+            if len(message.embeds) + len(message.attachments) > 0:
+                await message.add_reaction('📌')
+                await message.add_reaction('<:CookieHeart:673558008185487381>')
+                return
+        
         if message.author.id == self.bot.user.id:
             return
-        # We need to check if it is a member because webhook message authors are not members and can't have permissions.
+        # We need to check if it is a member in addition since webhook message authors are not members and can't have permissions.
         if message.author is discord.Member and message.author.guild_permissions.administrator:
             return
-        if message.type not in (MessageType.default, MessageType.reply):
-            return
         if message.channel.type != ChannelType.text:
+            return
+        if message.type not in (MessageType.default, MessageType.reply):
             return
         if message.channel.name.find(
                 'media') == -1:  # looks for the position of substring. if it's not found, this returns -1.
             return
-        # We need to wait a bit in-case discord generates embeds or adds attachments.
-        await asyncio.sleep(2.500)
+        
+        await asyncio.sleep(2.500) #wait for embeds
         if len(message.embeds) + len(message.attachments) > 0:
             await message.add_reaction('📌')  # doesn't check if channel is private, only if media isn't in the name
             return
         try:
+            await message.channel.send(f'<@{message.author.id}> Sorry, you can\'t talk in media channels, but you can start a thread! if you posted media, try again and make sure it embedded properly',
+                                       delete_after=8)
             await message.delete()
-            await message.channel.send('Unfortunately, you can\'t talk in media channels. You have to send either \
-an attachment or embed with your message. If you sent a link, discord timed out and didn\'t embed the message. \
-(discord can struggle to do this when the file size is large, especially when their servers are being slow). \
-You can try again, or you can download whatever is at the link and upload it to discord manually. Don\'t be afraid to \
-try multiple times. This is all a discord limitation we can\'t do anything about at the moment. Sorry :(',
-                                       delete_after=12)
-        except discord.NotFound:
-            # Message was already deleted.
+        except discord.NotFound: # Message was already deleted.
             pass
-
 
 async def setup(bot):
     await bot.add_cog(Admin(bot))
